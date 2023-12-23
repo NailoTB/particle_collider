@@ -1,3 +1,0 @@
-/home/nipa/particle_collider/bin/CMakeFiles/ParticleSimulator.dir
-/home/nipa/particle_collider/bin/CMakeFiles/edit_cache.dir
-/home/nipa/particle_collider/bin/CMakeFiles/rebuild_cache.dir

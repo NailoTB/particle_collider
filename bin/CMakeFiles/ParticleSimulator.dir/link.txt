@@ -1,1 +1,0 @@
-/usr/bin/c++ CMakeFiles/ParticleSimulator.dir/src/Particle.cpp.o CMakeFiles/ParticleSimulator.dir/src/Dynamics.cpp.o CMakeFiles/ParticleSimulator.dir/src/main.cpp.o -o ParticleSimulator 
