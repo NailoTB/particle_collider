@@ -8,8 +8,6 @@
 class Particle {
 public:
     // Constructors and Destructor
-    Particle();
-
     Particle(const std::string& name, const double mass, const double charge, 
     const std::vector<double>& position, const std::vector<double>& velocity);
 
@@ -21,18 +19,24 @@ public:
 
     const std::vector<double>& getPosition() const;
     const std::vector<double>& getVelocity() const;
+    const std::vector<double>& getFourMomentum() const;
 
     void setName(const std::string& name);
     void setPosition(const std::vector<double>& position);
     void setVelocity(const std::vector<double>& velocity);
 
-private:
-    // Private member variables
+    void updateVelocity();
+    void addFourMomentum(const std::vector<double>& addedMomentum);
+    virtual void updateFourMomentum();
+
+protected:
     std::string name;
     const double mass;
     const double charge;
+    double energy;
     std::vector<double> position;
     std::vector<double> velocity;
+    std::vector<double> fourMomentum;
 };
 
 #endif // PARTICLE_H
