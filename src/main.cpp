@@ -10,6 +10,7 @@
 #include <QTimer>
 #include <QBrush>
 #include <QElapsedTimer>
+
 int main(int argc, char **argv)
 {
     QApplication app(argc, argv);
