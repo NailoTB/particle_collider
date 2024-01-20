@@ -18,6 +18,8 @@ include_directories(${Qt5Widgets_INCLUDE_DIRS})
 # Add source files
 set(SOURCES
     src/Particle.cpp
+    src/Cell.cpp
+    src/CellSpace.cpp
     src/Dynamics.cpp
     src/Fermion.cpp
     src/Boson.cpp
