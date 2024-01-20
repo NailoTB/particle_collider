@@ -17,6 +17,11 @@ void Cell::removeParticle(const Particle *particle)
     particles.erase(newEnd, particles.end());
 }
 
+double Cell::returnXCoordinate(){
+    return(x_coordinate);
+}
+
+
 //void Cell::checkCollisions()
 //{
     // Implement collision detection between particles within this cell

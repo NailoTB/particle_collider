@@ -11,14 +11,20 @@
 class Cell
 {
 public:
-    Cell(const double x, const double y, const double size);
+    Cell(double x, double y, double size);
     void addParticle(const Particle *particle);
     void removeParticle(const Particle *particle);
+    double returnXCoordinate();
+    double x_coordinate; 
+    double y_coordinate;
+    double size; // In the future maybe not constant
 private:
     std::vector<const Particle*> particles;
-    const double x_coordinate; 
-    const double y_coordinate;
-    const double size; // In the future maybe not constant
 };
+
+// Cell* createCell(const double x, const double y, const double size){
+    // Cell* newCell = &Cell(x, y, size);
+    // return(newCell);
+// }
 
 #endif // CELL_H

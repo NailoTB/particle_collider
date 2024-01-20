@@ -12,10 +12,14 @@ class CellSpace
 {
 public:
 
-    CellSpace();
+    CellSpace(unsigned int, unsigned int, double);
+    std::vector<std::vector<Cell>> grid;
 
 private:
-    std::vector<std::vector<Cell>> grid;
+    unsigned int rows;
+    unsigned int columns;
+    double cellSize;
+    void createGrid();
 };
 
 #endif // CELLSPACE_H
