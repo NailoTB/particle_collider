@@ -17,9 +17,9 @@
 int main(int argc, char **argv)
 {
 
-    CellSpace newspace(1, 1, 100000);
-    std::vector<double> velocity = {10, 10, 0.0};
-    std::vector<std::shared_ptr<Particle>> particleDistribution = Dynamics::generateParticleDistribution(100, 100, 10, velocity, 10);
+    CellSpace newspace(100, 100, 50.0);
+    std::vector<double> velocity = {40.0, 40.0, 0.0};
+    std::vector<std::shared_ptr<Particle>> particleDistribution = Dynamics::generateParticleDistribution(70.0, 70.0, 1.0, velocity, 50);
 
     newspace.populateCells(particleDistribution);
 
@@ -32,6 +32,7 @@ int main(int argc, char **argv)
     QGraphicsView view(&scene);
     view.show();
     view.resize(800, 600); // Create QGraphicsEllipseItems to represent the particles
+
     std::vector<QGraphicsEllipseItem*> particleGraphicsItems;
     for (auto particle : particleDistribution){
         QGraphicsEllipseItem *particleItem = new QGraphicsEllipseItem(particle->getPosition()[0], particle->getPosition()[1], 3, 3);

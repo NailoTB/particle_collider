@@ -7,6 +7,7 @@
 #include <vector>
 #include <algorithm>
 #include <memory>
+#include <tuple>
 #include "Particle.h"
 #include "Dynamics.h"
 class Cell
@@ -21,9 +22,12 @@ public:
     double x_coordinate;
     double y_coordinate;
     double size; // In the future maybe not constant
+    std::vector< std::tuple<std::shared_ptr<Particle>, std::tuple<int,int>> > outOfBoundsParticles;
     std::vector<std::shared_ptr<Particle>> particles;
 
+
 private:
+    std::tuple<int,int> isOutOfBounds(std::shared_ptr<Particle>, int, int);
 };
 
 #endif // CELL_H

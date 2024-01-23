@@ -13,6 +13,8 @@ void Cell::printParticleList()
         return;
     }
     int particleCount = 0;
+    std::cout << "In Cell at coordinates: " << x_coordinate << " " << y_coordinate << '\n';
+
     for (auto &particle : particles)
     {
         std::cout << "Particle number " + std::to_string(particleCount) + " at: ";
@@ -37,17 +39,60 @@ void Cell::clear()
     particles.clear();
 }
 
+std::tuple<int, int> Cell::isOutOfBounds(std::shared_ptr<Particle> particle, int selfRow, int selfColumn)
+{
+    // Returns the index of the new cell
+    int newRow = selfRow;
+    int newColumn = selfColumn;
+
+    auto newPos = particle->getPosition();
+    bool overX, underX, overY, underY;
+
+    overX = (newPos[0] > x_coordinate + size);
+    underX = (newPos[0] < x_coordinate);
+    overY = (newPos[1] > y_coordinate + size);
+    underY = (newPos[1] < y_coordinate);
+    if (overX)
+    {
+        newColumn++;
+    }
+    if (overY)
+    {
+        newRow++;
+    }
+    if (underX)
+    {
+        newColumn--;
+    }
+    if (underY)
+    {
+        newRow--;
+    }
+
+    return std::make_tuple(newRow, newColumn);
+}
+
 void Cell::update(double dt)
 {
+    if (particles.empty())
+    {
+        return;
+    }
+
+    int selfRow = int(y_coordinate / size);
+    int selfColumn = int(x_coordinate / size);
     for (auto particle : particles)
     {
-        auto oldPos = particle->getPosition()[0];
         Dynamics::updatePosition(particle, dt);
-        auto newPos = particle->getPosition()[0];
-        if (oldPos == newPos){
-            std::cout << " Halo ?" << '\n';
+        auto outOfBounds = isOutOfBounds(particle, selfRow, selfColumn);
+
+        if (std::get<0>(outOfBounds) != selfRow || std::get<1>(outOfBounds) != selfColumn)
+        {
+            outOfBoundsParticles.push_back(std::make_tuple(particle, outOfBounds));
         }
     }
+
+    // TODO: Include collisions
 }
 
 // void Cell::checkCollisions()
