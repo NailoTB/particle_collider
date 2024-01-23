@@ -15,7 +15,8 @@ public:
 
     CellSpace(unsigned int, unsigned int, double);
     std::vector<std::vector<Cell>> grid;
-    void populateCells(std::vector<std::shared_ptr<Particle>> &, bool );
+    void populateCells(std::vector<std::shared_ptr<Particle>> &);
+    void updateCells(double);
 
 private:
     unsigned int rows;

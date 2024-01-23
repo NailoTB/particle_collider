@@ -38,13 +38,8 @@ void CellSpace::clearCells()
     }
 }
 
-void CellSpace::populateCells(std::vector<std::shared_ptr<Particle>> &particleVector, bool clearExistingCells = true)
+void CellSpace::populateCells(std::vector<std::shared_ptr<Particle>> &particleVector)
 {
-    if (clearExistingCells)
-    {
-        clearCells();
-    }
-
     for (const auto &particle : particleVector)
     {
         auto particlePos = particle->getPosition();
@@ -54,12 +49,47 @@ void CellSpace::populateCells(std::vector<std::shared_ptr<Particle>> &particleVe
 
         if (xCell >= columns || yCell >= rows)
         {
-            std::cout << "Particle out of grid space" << '\n';
+            // TODO: negative case
+            // TODO: Flag particle for deletion
+            //std::cout << "Particle out of grid space" << '\n';
             continue;
         }
         grid[xCell][yCell].addParticle(particle);
     }
 }
 
-//TODO: Update Cells
-//TODO: Move particles to new Cells
+void CellSpace::updateCells(double dt)
+{
+    for (int i = 0; i < rows; i++)
+    {
+        for (int j = 0; j < columns; j++)
+        {
+            grid[i][j].update(dt);
+        }
+    }
+
+
+}
+// TODO: Move particles to new Cells
+    // returns the direction where particle went over
+    // 1, -1 -> x-direction
+    // 2, -2 -> y-direction
+    // in standard base
+        // auto newPos = particle->getPosition();
+        // if (newPos[0] > x_coordinate + size)
+        // {
+        //     return 1;
+        // }
+        // if (newPos[0] < x_coordinate)
+        // {
+        //     return -1;
+        // }
+        // if (newPos[1] > y_coordinate + size)
+        // {
+        //     return 2;
+        // }
+        // if (newPos[2] < y_coordinate)
+        // {
+        //     return -2;
+        // }
+        // return 0;

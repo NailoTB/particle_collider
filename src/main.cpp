@@ -4,72 +4,71 @@
 #include "Dynamics.h"
 #include "CellSpace.h"
 #include <stdio.h>
+#include <memory>
 
-// #include <QApplication>
-// #include <QGraphicsScene>
-// #include <QGraphicsView>
-// #include <QGraphicsEllipseItem>
-// #include <QTimer>
-// #include <QBrush>
-// #include <QElapsedTimer>
+#include <QApplication>
+#include <QGraphicsScene>
+#include <QGraphicsView>
+#include <QGraphicsEllipseItem>
+#include <QTimer>
+#include <QBrush>
+#include <QElapsedTimer>
 
 int main(int argc, char **argv)
 {
-    // QApplication app(argc, argv);
 
-    CellSpace newspace(10, 10, 0.1);
-    std::vector<double> velocity = {0.0, 0.01, 0.0};
-    std::vector<std::shared_ptr<Particle>> particleDistribution = Dynamics::generateParticleDistribution(0.5, 0.5, 0.1, velocity, 100);
-    newspace.populateCells(particleDistribution, false);
-    for (int i = 0; i < 10; i++)
-    {
-        for (int j = 0; j < 10; j++)
-        {
-            std::cout << "Cell: " << i << " " << j << std::endl;
-            newspace.grid[i][j].printParticleList();
-        }
-    }
+    CellSpace newspace(1, 1, 100000);
+    std::vector<double> velocity = {10, 10, 0.0};
+    std::vector<std::shared_ptr<Particle>> particleDistribution = Dynamics::generateParticleDistribution(100, 100, 10, velocity, 10);
+
+    newspace.populateCells(particleDistribution);
+
+    QApplication app(argc, argv);
 
     // Create a QGraphicsScene and a QGraphicsView
-    // QGraphicsScene scene;
-    // scene.setBackgroundBrush(QBrush(Qt::white));
+    QGraphicsScene scene;
+    scene.setBackgroundBrush(QBrush(Qt::white));
 
-    // QGraphicsView view(&scene);
-    // view.show();
-    // view.resize(800, 600); // Create QGraphicsEllipseItems to represent the particles
-    // QGraphicsEllipseItem *photonItem = new QGraphicsEllipseItem(
-    // photon.getPosition()[0], photon.getPosition()[1], 3, 3);
-    // QGraphicsEllipseItem *electronItem = new QGraphicsEllipseItem(
-    // electron.getPosition()[0], electron.getPosition()[1], 10, 10);
+    QGraphicsView view(&scene);
+    view.show();
+    view.resize(800, 600); // Create QGraphicsEllipseItems to represent the particles
+    std::vector<QGraphicsEllipseItem*> particleGraphicsItems;
+    for (auto particle : particleDistribution){
+        QGraphicsEllipseItem *particleItem = new QGraphicsEllipseItem(particle->getPosition()[0], particle->getPosition()[1], 3, 3);
+        particleItem->setBrush(QBrush(Qt::blue)); 
+        scene.addItem(particleItem);
 
-    // photonItem->setBrush(QBrush(Qt::yellow)); // Set color for the photon
-    // electronItem->setBrush(QBrush(Qt::blue)); // Set color for the electron
+        particleGraphicsItems.push_back(particleItem);
+    }
 
-    // Add the items to the scene
-    // scene.addItem(photonItem);
-    // scene.addItem(electronItem);
+    std::vector<double> zeroVel = {10, 10, 0.0};
+    std::vector<double> zeroPos = {100, 100, 0.0};
+    // std::shared_ptr<Fermion> newParticle = std::make_shared<Fermion>("Electron Centre", electronMass, -eCharge, zeroPos, zeroVel);
+    // QGraphicsEllipseItem *centreParticle = new QGraphicsEllipseItem(newParticle->getPosition()[0], newParticle->getPosition()[1], 4, 4);
+    // centreParticle->setBrush(QBrush(Qt::red)); 
+    // scene.addItem(centreParticle);
 
-    // const double dt = 0.000000001; // Time increment
-    // QTimer timer;
-    // QElapsedTimer elapsedTimer;
-    // elapsedTimer.start();
-    // QObject::connect(&timer, &QTimer::timeout, [&]()
-    // {
-    // Dynamics::updatePosition(photon, dt);
-    // Dynamics::updatePosition(electron, dt);
+    const double dt = 0.01; // Time increment
+    QTimer timer;
+    QElapsedTimer elapsedTimer;
+    elapsedTimer.start();
+    QObject::connect(&timer, &QTimer::timeout, [&]()
+                     {
+    newspace.updateCells(dt);
+        //Update the positions of QGraphicsEllipseItems
+    int itemEnum = 0;
+    for (auto particle : particleDistribution){
+        particleGraphicsItems[itemEnum]->setPos(particle->getPosition()[0], particle->getPosition()[1]);
+        itemEnum++;
+    }
 
-    // Update the positions of QGraphicsEllipseItems
-    // photonItem->setPos(photon.getPosition()[0], photon.getPosition()[1]);
-    // electronItem->setPos(electron.getPosition()[0], electron.getPosition()[1]);
+    //view.setSceneRect(centreParticle->pos().x() - view.viewport()->width()/2,
+    //centreParticle->pos().y() - view.viewport()->height()/2,
+    //view.viewport()->width(),
+    //view.viewport()->height());
+    view.viewport()->update(); });
 
-    // view.setSceneRect(electronItem->pos().x() - view.viewport()->width()/2,
-    // electronItem->pos().y() - view.viewport()->height()/2,
-    // view.viewport()->width(),
-    // view.viewport()->height());
-    // view.viewport()->update(); });
+    timer.start(10);
 
-    // timer.start(10);
-
-    // return app.exec();
-    return (0);
+    return app.exec();
 }

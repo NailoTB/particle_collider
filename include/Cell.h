@@ -8,7 +8,7 @@
 #include <algorithm>
 #include <memory>
 #include "Particle.h"
-
+#include "Dynamics.h"
 class Cell
 {
 public:
@@ -17,11 +17,13 @@ public:
     void removeParticle(std::shared_ptr<Particle> particle);
     void clear();
     void printParticleList();
+    void update(double);
     double x_coordinate;
     double y_coordinate;
     double size; // In the future maybe not constant
-private:
     std::vector<std::shared_ptr<Particle>> particles;
+
+private:
 };
 
 #endif // CELL_H

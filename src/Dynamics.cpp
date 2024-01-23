@@ -12,25 +12,30 @@ namespace Dynamics
 
         std::normal_distribution<double> xDistribution(xCentre, spread);
         std::normal_distribution<double> yDistribution(yCentre, spread);
+        std::normal_distribution<double> vDistribution(velocity[0], 1);
+
 
         std::vector<std::shared_ptr<Particle>> generatedParticles;
 
         for (unsigned int i = 0; i < numParticles; i++)
         {
+            double velocityFactor = vDistribution(generator);
+            std::vector<double> velocityNoised = {velocity[0] + velocityFactor, velocity[1] + velocityFactor, 0.0};
+
             //std::cout << xDistribution(generator) << std::endl;
             std::vector<double> particle_position = {xDistribution(generator), yDistribution(generator), 0};
-            std::shared_ptr<Fermion> newParticle = std::make_shared<Fermion>("Electron", electronMass, -eCharge, particle_position, velocity);
+            std::shared_ptr<Fermion> newParticle = std::make_shared<Fermion>("Electron", electronMass, -eCharge, particle_position, velocityNoised);
             generatedParticles.push_back(newParticle);
         }
         return generatedParticles;
     }
 
-    void updatePosition(Particle &particle, const double dt)
+    void updatePosition(std::shared_ptr<Particle> particle, const double dt)
     {
 
-        const std::vector<double> &velocity = particle.getVelocity();
-        const std::vector<double> &currentPosition = particle.getPosition();
-        const double &mass = particle.getMass();
+        const std::vector<double> &velocity = particle->getVelocity();
+        const std::vector<double> &currentPosition = particle->getPosition();
+        const double &mass = particle->getMass();
         std::vector<double> newPosition(currentPosition.size());
 
         for (int i = 0; i < currentPosition.size(); i++)
@@ -39,7 +44,7 @@ namespace Dynamics
             newPosition[i] = currentPosition[i] + velocity[i] * dt;
         }
 
-        particle.setPosition(newPosition);
+        particle->setPosition(newPosition);
     }
 
     double velocityNorm(const std::vector<double> &velocityVector)

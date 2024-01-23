@@ -13,7 +13,7 @@ void Cell::printParticleList()
         return;
     }
     int particleCount = 0;
-    for (auto& particle : particles)
+    for (auto &particle : particles)
     {
         std::cout << "Particle number " + std::to_string(particleCount) + " at: ";
         std::cout << particle->getPosition()[0] << " " << particle->getPosition()[1] << '\n';
@@ -35,6 +35,19 @@ void Cell::removeParticle(std::shared_ptr<Particle> particle)
 void Cell::clear()
 {
     particles.clear();
+}
+
+void Cell::update(double dt)
+{
+    for (auto particle : particles)
+    {
+        auto oldPos = particle->getPosition()[0];
+        Dynamics::updatePosition(particle, dt);
+        auto newPos = particle->getPosition()[0];
+        if (oldPos == newPos){
+            std::cout << " Halo ?" << '\n';
+        }
+    }
 }
 
 // void Cell::checkCollisions()

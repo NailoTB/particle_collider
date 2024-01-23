@@ -17,7 +17,7 @@ namespace Dynamics
     double gamma(const std::vector<double> &threeVelocity);
     std::vector<std::shared_ptr<Particle>> generateParticleDistribution(double, double, double, std::vector<double>, int);
 
-    void updatePosition(Particle &particle, const double dt);
+    void updatePosition(std::shared_ptr<Particle> particle, const double dt);
     void interactPhotonFermion(Boson& photon, Fermion& fermion);
 
     //Boson interactFermionFermion(Fermion& fermion1, Fermion& fermion2){
