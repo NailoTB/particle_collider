@@ -14,8 +14,7 @@ Particle::Particle(const std::string &name, const double mass, const double char
 
 void Particle::updateFourMomentum()
 {
-    double gammaFactor = Dynamics::gamma(velocity);
-    double gammaMass = gammaFactor * mass;
+    double gammaMass = Dynamics::gamma(velocity) * mass;
 
     std::vector<double> threeMomentum = {gammaMass * velocity[0], gammaMass * velocity[1], gammaMass * velocity[2]};
     double velocitySquare = std::pow(Dynamics::velocityNorm(threeMomentum), 2);

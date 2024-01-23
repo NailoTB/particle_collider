@@ -38,30 +38,28 @@ void CellSpace::clearCells()
     }
 }
 
-void CellSpace::populateCells(const std::vector<Particle *> &particleVector, bool clearExistingCells = true)
+void CellSpace::populateCells(std::vector<std::shared_ptr<Particle>> &particleVector, bool clearExistingCells = true)
 {
     if (clearExistingCells)
     {
         clearCells();
     }
-    for (Particle *particle : particleVector)
+
+    for (const auto &particle : particleVector)
     {
         auto particlePos = particle->getPosition();
 
-        int xCell = std::floor(cellSize * columns / particlePos[0]);
-        int yCell = std::floor(cellSize * rows / particlePos[1]);
+        int xCell = std::floor(particlePos[0] / cellSize);
+        int yCell = std::floor(particlePos[1] / cellSize);
 
-        if (xCell > columns || yCell > rows)
+        if (xCell >= columns || yCell >= rows)
         {
-            // TODO: Negative values
-            // TODO: Flag particle for deletion
-            std::cout << "Particle out of gridspace" << '\n';
+            std::cout << "Particle out of grid space" << '\n';
             continue;
         }
         grid[xCell][yCell].addParticle(particle);
     }
 }
 
-// void update()
-// {
-// }
+//TODO: Update Cells
+//TODO: Move particles to new Cells

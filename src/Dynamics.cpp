@@ -4,6 +4,27 @@
 
 namespace Dynamics
 {
+    std::vector<std::shared_ptr<Particle>> generateParticleDistribution(double xCentre, double yCentre, double spread, std::vector<double> velocity, int numParticles)
+    {
+        // TODO: Make more general for different particles and velocities
+        std::random_device rd;
+        std::mt19937 generator(rd());
+
+        std::normal_distribution<double> xDistribution(xCentre, spread);
+        std::normal_distribution<double> yDistribution(yCentre, spread);
+
+        std::vector<std::shared_ptr<Particle>> generatedParticles;
+
+        for (unsigned int i = 0; i < numParticles; i++)
+        {
+            //std::cout << xDistribution(generator) << std::endl;
+            std::vector<double> particle_position = {xDistribution(generator), yDistribution(generator), 0};
+            std::shared_ptr<Fermion> newParticle = std::make_shared<Fermion>("Electron", electronMass, -eCharge, particle_position, velocity);
+            generatedParticles.push_back(newParticle);
+        }
+        return generatedParticles;
+    }
+
     void updatePosition(Particle &particle, const double dt)
     {
 
@@ -43,12 +64,14 @@ namespace Dynamics
         double fermionCharge = fermion.getCharge();
         double pullPushFactor = 1.0;
 
-        if(pseudoCharge * fermionCharge < 0.0){
+        if (pseudoCharge * fermionCharge < 0.0)
+        {
             pullPushFactor = -1.0;
         }
 
         std::vector<double> additionMomentum = photon.getFourMomentum();
-        for (int i = 1 ; i < additionMomentum.size(); i++) {
+        for (int i = 1; i < additionMomentum.size(); i++)
+        {
             additionMomentum[i] = pullPushFactor * additionMomentum[i];
         }
         fermion.addFourMomentum(additionMomentum);

@@ -6,26 +6,22 @@
 #include <string>
 #include <vector>
 #include <algorithm>
+#include <memory>
 #include "Particle.h"
 
 class Cell
 {
 public:
     Cell(double x, double y, double size);
-    void addParticle(const Particle *particle);
-    void removeParticle(const Particle *particle);
+    void addParticle(std::shared_ptr<Particle> particle);
+    void removeParticle(std::shared_ptr<Particle> particle);
     void clear();
+    void printParticleList();
     double x_coordinate;
     double y_coordinate;
     double size; // In the future maybe not constant
 private:
-    std::vector<const Particle *> particles;
-
+    std::vector<std::shared_ptr<Particle>> particles;
 };
-
-// Cell* createCell(const double x, const double y, const double size){
-// Cell* newCell = &Cell(x, y, size);
-// return(newCell);
-// }
 
 #endif // CELL_H

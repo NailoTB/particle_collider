@@ -15,13 +15,13 @@ public:
 
     CellSpace(unsigned int, unsigned int, double);
     std::vector<std::vector<Cell>> grid;
+    void populateCells(std::vector<std::shared_ptr<Particle>> &, bool );
 
 private:
     unsigned int rows;
     unsigned int columns;
     double cellSize;
     void createGrid();
-    void populateCells(const std::vector<Particle *> &, bool );
     void clearCells();
 };
 
