@@ -14,17 +14,18 @@ public:
     Cell(double x, double y, double size);
     void addParticle(const Particle *particle);
     void removeParticle(const Particle *particle);
-    double returnXCoordinate();
-    double x_coordinate; 
+    void clear();
+    double x_coordinate;
     double y_coordinate;
     double size; // In the future maybe not constant
 private:
-    std::vector<const Particle*> particles;
+    std::vector<const Particle *> particles;
+
 };
 
 // Cell* createCell(const double x, const double y, const double size){
-    // Cell* newCell = &Cell(x, y, size);
-    // return(newCell);
+// Cell* newCell = &Cell(x, y, size);
+// return(newCell);
 // }
 
 #endif // CELL_H

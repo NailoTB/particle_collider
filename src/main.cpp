@@ -20,8 +20,9 @@ int main(int argc, char **argv)
     // Create a particle
     Boson photon("Photon", 0.0, -1.0, 500.0, {1.0, 0.0, 0.0}, {0.5 * speedOfLight, std::sqrt(3) / 2 * speedOfLight, 0.0});
     Fermion electron("Electron", electronMass, -eCharge, {0.0, 0.0, 0.0}, {1.0, 0.0, 0.0});
+    
     CellSpace newspace(5,5,0.1);
-    std::cout << newspace.grid[4][2].returnXCoordinate();
+    std::cout << newspace.grid[4][2].x_coordinate;
 
     // Create a QGraphicsScene and a QGraphicsView
     // QGraphicsScene scene;

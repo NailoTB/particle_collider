@@ -14,15 +14,15 @@ Particle::Particle(const std::string &name, const double mass, const double char
 
 void Particle::updateFourMomentum()
 {
-    double gammaFactor = Dynamics::gamma(Particle::velocity);
+    double gammaFactor = Dynamics::gamma(velocity);
     double gammaMass = gammaFactor * mass;
 
     std::vector<double> threeMomentum = {gammaMass * velocity[0], gammaMass * velocity[1], gammaMass * velocity[2]};
     double velocitySquare = std::pow(Dynamics::velocityNorm(threeMomentum), 2);
-    double energy_updated = std::sqrt(velocitySquare * std::pow(speedOfLight, 2) + mass * mass * std::pow(speedOfLight, 4));
+    double energyUpdated = std::sqrt(velocitySquare * std::pow(speedOfLight, 2) + mass * mass * std::pow(speedOfLight, 4));
 
-    energy = energy_updated;
-    fourMomentum = {energy_updated / speedOfLight, threeMomentum[0], threeMomentum[1], threeMomentum[2]};
+    energy = energyUpdated;
+    fourMomentum = {energyUpdated / speedOfLight, threeMomentum[0], threeMomentum[1], threeMomentum[2]};
 }
 
 void Particle::addFourMomentum(const std::vector<double>& addedMomentum){

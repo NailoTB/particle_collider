@@ -5,6 +5,7 @@
 
 #include <string>
 #include <vector>
+#include <cmath>
 #include "Cell.h"
 #include "Particle.h"
 
@@ -20,6 +21,8 @@ private:
     unsigned int columns;
     double cellSize;
     void createGrid();
+    void populateCells(const std::vector<Particle *> &, bool );
+    void clearCells();
 };
 
 #endif // CELLSPACE_H
