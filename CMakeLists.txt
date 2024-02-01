@@ -5,7 +5,7 @@ cmake_minimum_required(VERSION 3.12)
 project(ParticleSimulator)
 
 # Set C++ standard
-set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 # Add include directories

@@ -14,20 +14,21 @@ class Cell
 {
 public:
     Cell(double x, double y, double size);
-    void addParticle(std::shared_ptr<Particle> particle);
-    void removeParticle(std::shared_ptr<Particle> particle);
+    void addParticle(std::unique_ptr<Particle> &particle);
+    void removeParticle(const std::unique_ptr<Particle> &particle);
+
     void clear();
     void printParticleList();
+    std::vector<std::vector<double>> particlePositions();
     void update(double);
     double x_coordinate;
     double y_coordinate;
     double size; // In the future maybe not constant
-    std::vector< std::tuple<std::shared_ptr<Particle>, std::tuple<int,int>> > outOfBoundsParticles;
-    std::vector<std::shared_ptr<Particle>> particles;
-
+    std::vector<std::tuple<std::unique_ptr<Particle>, std::tuple<int, int>>> outOfBoundsParticles;
 
 private:
-    std::tuple<int,int> isOutOfBounds(std::shared_ptr<Particle>, int, int);
+    std::vector<std::unique_ptr<Particle>> particles;
+    std::tuple<int, int> isOutOfBounds(std::unique_ptr<Particle> &, int, int);
 };
 
 #endif // CELL_H

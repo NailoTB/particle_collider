@@ -17,10 +17,12 @@
 int main(int argc, char **argv)
 {
 
-    CellSpace newspace(100, 100, 50.0);
-    std::vector<double> velocity = {40.0, 40.0, 0.0};
-    std::vector<std::shared_ptr<Particle>> particleDistribution = Dynamics::generateParticleDistribution(70.0, 70.0, 1.0, velocity, 50);
-
+    CellSpace newspace(10, 10, 100.0);
+    std::vector<double> velocityP = {40.0, 0, 0.0};
+    std::vector<double> velocityM = {-40.0, 0, 0.0};
+    std::vector<std::unique_ptr<Particle>> particleDistribution = Dynamics::generateParticleDistribution(70.0, 70.0, 10.0, velocityP, 500);
+    // Move to Cells
+    // Out of CellSpace -> automatic removal
     newspace.populateCells(particleDistribution);
 
     QApplication app(argc, argv);
@@ -31,42 +33,32 @@ int main(int argc, char **argv)
 
     QGraphicsView view(&scene);
     view.show();
-    view.resize(800, 600); // Create QGraphicsEllipseItems to represent the particles
-
-    std::vector<QGraphicsEllipseItem*> particleGraphicsItems;
-    for (auto particle : particleDistribution){
-        QGraphicsEllipseItem *particleItem = new QGraphicsEllipseItem(particle->getPosition()[0], particle->getPosition()[1], 3, 3);
-        particleItem->setBrush(QBrush(Qt::blue)); 
-        scene.addItem(particleItem);
-
-        particleGraphicsItems.push_back(particleItem);
-    }
-
-    std::vector<double> zeroVel = {10, 10, 0.0};
-    std::vector<double> zeroPos = {100, 100, 0.0};
-    // std::shared_ptr<Fermion> newParticle = std::make_shared<Fermion>("Electron Centre", electronMass, -eCharge, zeroPos, zeroVel);
-    // QGraphicsEllipseItem *centreParticle = new QGraphicsEllipseItem(newParticle->getPosition()[0], newParticle->getPosition()[1], 4, 4);
-    // centreParticle->setBrush(QBrush(Qt::red)); 
-    // scene.addItem(centreParticle);
-
-    const double dt = 0.01; // Time increment
+    view.resize(800, 600);                       // Create QGraphicsEllipseItems to represent the particles
+    QList<QGraphicsEllipseItem *> particleItems; // Keep track of particle items
+    const double dt = 0.01;                      // Time increment
     QTimer timer;
     QElapsedTimer elapsedTimer;
     elapsedTimer.start();
     QObject::connect(&timer, &QTimer::timeout, [&]()
                      {
-    newspace.updateCells(dt);
-        //Update the positions of QGraphicsEllipseItems
-    int itemEnum = 0;
-    for (auto particle : particleDistribution){
-        particleGraphicsItems[itemEnum]->setPos(particle->getPosition()[0], particle->getPosition()[1]);
-        itemEnum++;
+    // Remove old particle items from the scene
+    for (auto item : particleItems) {
+        scene.removeItem(item);
+        delete item; // Free memory
     }
+    particleItems.clear(); // Clear the list of particle items
 
-    //view.setSceneRect(centreParticle->pos().x() - view.viewport()->width()/2,
-    //centreParticle->pos().y() - view.viewport()->height()/2,
-    //view.viewport()->width(),
-    //view.viewport()->height());
+    // Update cell space
+    newspace.updateCells(dt);
+    auto posMatrix = newspace.allParticlePositions();
+
+    // Add new particle items to the scene
+    for (auto pos : posMatrix){
+        QGraphicsEllipseItem *particleItem = new QGraphicsEllipseItem(pos[0], pos[1], 3, 3);
+        particleItem->setBrush(QBrush(Qt::blue));
+        scene.addItem(particleItem);
+        particleItems.append(particleItem);
+    }
     view.viewport()->update(); });
 
     timer.start(10);

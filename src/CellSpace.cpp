@@ -20,13 +20,13 @@ void CellSpace::createGrid()
         for (unsigned int cindex = 0; cindex < columns; cindex++)
         {
             Cell newcell = Cell(xcoord, ycoord, cellSize);
-            cellRow.push_back(newcell);
+            cellRow.push_back(std::move(newcell));
             xcoord += cellSize;
         }
-        cellGrid.push_back(cellRow);
+        cellGrid.push_back(std::move(cellRow));
         ycoord += cellSize;
     }
-    grid = cellGrid;
+    grid = std::move(cellGrid);
 }
 
 void CellSpace::clearCells()
@@ -40,9 +40,9 @@ void CellSpace::clearCells()
     }
 }
 
-void CellSpace::populateCells(std::vector<std::shared_ptr<Particle>> &particleVector)
+void CellSpace::populateCells(std::vector<std::unique_ptr<Particle>> &particleVector)
 {
-    for (const auto &particle : particleVector)
+    for (auto &particle : particleVector)
     {
         auto particlePos = particle->getPosition();
 
@@ -56,10 +56,25 @@ void CellSpace::populateCells(std::vector<std::shared_ptr<Particle>> &particleVe
             // std::cout << "Particle out of grid space" << '\n';
             continue;
         }
-
         grid[yCell][xCell].addParticle(particle);
     }
 }
+
+std::vector<std::vector<double>> CellSpace::allParticlePositions()
+{
+    std::vector<std::vector<double>> allParticlePositions;
+
+    for (auto &cellRow : grid)
+    {
+        for (auto &cell : cellRow)
+        {
+            auto particlePositionsInCell = cell.particlePositions();
+            allParticlePositions.insert(allParticlePositions.end(), particlePositionsInCell.begin(), particlePositionsInCell.end());
+        }
+    }
+
+    return allParticlePositions;
+};
 
 void CellSpace::updateCells(double dt)
 {
@@ -71,7 +86,7 @@ void CellSpace::updateCells(double dt)
         }
     }
 
-    std::vector<std::tuple<std::shared_ptr<Particle>, int, int, int, int>> moves;
+    std::vector<std::tuple<std::unique_ptr<Particle>, int, int, int, int>> moves;
 
     for (int i = 0; i < rows; i++)
     {
@@ -82,8 +97,10 @@ void CellSpace::updateCells(double dt)
             {
                 for (auto &outOfBounds : outOfBoundsStructure)
                 {
-                    std::tuple<int, int> newCell = std::get<1>(outOfBounds);
-                    moves.push_back(std::make_tuple(std::get<0>(outOfBounds), i, j, std::get<0>(newCell), std::get<1>(newCell)));
+                    auto &particlePtr = std::get<0>(outOfBounds);
+                    auto &newCell = std::get<1>(outOfBounds);
+                    
+                    moves.push_back(std::make_tuple(std::move(particlePtr), i, j, std::get<0>(newCell), std::get<1>(newCell)));
                 }
             }
         }
@@ -91,10 +108,10 @@ void CellSpace::updateCells(double dt)
 
     for (auto &move : moves)
     {
-        auto particle = std::get<0>(move);
+        auto &particle = std::get<0>(move);
         int oldRow = std::get<1>(move), oldCol = std::get<2>(move);
         int newRow = std::get<3>(move), newCol = std::get<4>(move);
-        
+
         //  Add bounds checking for newRow and newCol here
         grid[newRow][newCol].addParticle(particle);
         grid[oldRow][oldCol].removeParticle(particle);

@@ -23,12 +23,12 @@ void Cell::printParticleList()
     }
 }
 
-void Cell::addParticle(std::shared_ptr<Particle> particle)
+void Cell::addParticle(std::unique_ptr<Particle>& particle)
 {
-    particles.push_back(particle);
+    particles.push_back(std::move(particle));
 }
 
-void Cell::removeParticle(std::shared_ptr<Particle> particle)
+void Cell::removeParticle(const std::unique_ptr<Particle>& particle)
 {
     auto newEnd = std::remove(particles.begin(), particles.end(), particle);
     particles.erase(newEnd, particles.end());
@@ -39,7 +39,7 @@ void Cell::clear()
     particles.clear();
 }
 
-std::tuple<int, int> Cell::isOutOfBounds(std::shared_ptr<Particle> particle, int selfRow, int selfColumn)
+std::tuple<int, int> Cell::isOutOfBounds(std::unique_ptr<Particle>& particle, int selfRow, int selfColumn)
 {
     // Returns the index of the new cell
     int newRow = selfRow;
@@ -81,19 +81,27 @@ void Cell::update(double dt)
 
     int selfRow = int(y_coordinate / size);
     int selfColumn = int(x_coordinate / size);
-    for (auto particle : particles)
+    for (auto &particle : particles)
     {
         Dynamics::updatePosition(particle, dt);
         auto outOfBounds = isOutOfBounds(particle, selfRow, selfColumn);
 
         if (std::get<0>(outOfBounds) != selfRow || std::get<1>(outOfBounds) != selfColumn)
         {
-            outOfBoundsParticles.push_back(std::make_tuple(particle, outOfBounds));
+            outOfBoundsParticles.push_back(std::make_tuple(std::move(particle), outOfBounds));
         }
     }
 
     // TODO: Include collisions
 }
+    std::vector<std::vector<double>> Cell::particlePositions(){
+        std::vector<std::vector<double>> positionMatrix;
+        for (auto& particle : particles){
+            auto pos = particle->getPosition();
+            positionMatrix.push_back(pos);
+        }
+        return positionMatrix;
+    };
 
 // void Cell::checkCollisions()
 //{

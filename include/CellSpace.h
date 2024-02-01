@@ -14,11 +14,13 @@ class CellSpace
 public:
 
     CellSpace(unsigned int, unsigned int, double);
-    std::vector<std::vector<Cell>> grid;
-    void populateCells(std::vector<std::shared_ptr<Particle>> &);
+    std::vector<std::vector<double>> allParticlePositions();
+    void populateCells(std::vector<std::unique_ptr<Particle>> &);
     void updateCells(double);
 
 private:
+    std::vector<std::vector<Cell>> grid;
+
     unsigned int rows;
     unsigned int columns;
     double cellSize;

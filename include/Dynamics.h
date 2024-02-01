@@ -15,10 +15,11 @@ namespace Dynamics
 
     double velocityNorm(const std::vector<double> &threeVelocity);
     double gamma(const std::vector<double> &threeVelocity);
-    std::vector<std::shared_ptr<Particle>> generateParticleDistribution(double, double, double, std::vector<double>, int);
+    std::vector<std::unique_ptr<Particle>> generateParticleDistribution(double, double, double, std::vector<double>, int);
 
-    void updatePosition(std::shared_ptr<Particle> particle, const double dt);
+    void updatePosition(std::unique_ptr<Particle>& particle, const double dt);
     void interactPhotonFermion(Boson& photon, Fermion& fermion);
+    std::vector<double> particleDirectionVector(Particle &, Particle &);
 
     //Boson interactFermionFermion(Fermion& fermion1, Fermion& fermion2){
             //read charges
