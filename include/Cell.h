@@ -26,9 +26,9 @@ public:
     double y_coordinate;
     double size; // In the future maybe not constant
     std::vector<std::tuple<std::unique_ptr<Particle>, std::tuple<int, int>>> outOfBoundsParticles;
-
-private:
     std::vector<std::unique_ptr<Particle>> particles;
+private:
+    
     std::tuple<int, int> isOutOfBounds(std::unique_ptr<Particle> &, int, int);
 };
 

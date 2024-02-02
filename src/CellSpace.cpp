@@ -76,6 +76,23 @@ std::vector<std::vector<double>> CellSpace::allParticlePositions()
     return allParticlePositions;
 };
 
+void CellSpace::checkNeighborCollision(Cell &cell1, Cell &cell2)
+{
+    auto &particlesInCellOne = cell1.particles;
+    auto &particlesInCellTwo = cell2.particles;
+
+    for (auto &particle1 : particlesInCellOne)
+    {
+        for (auto &particle2 : particlesInCellTwo)
+        {
+            if (Dynamics::interactFermionFermion(particle1, particle2))
+            {
+                Dynamics::collision(particle1, particle2);
+            }
+        }
+    }
+}
+
 void CellSpace::updateCells(double dt)
 {
     for (int i = 0; i < rows; i++)
@@ -83,6 +100,18 @@ void CellSpace::updateCells(double dt)
         for (int j = 0; j < columns; j++)
         {
             grid[i][j].checkCollisions();
+            if (j + 1 < columns)
+            {
+                checkNeighborCollision(grid[i][j], grid[i][j + 1]);
+            }
+            if (i + 1 < rows)
+            {
+                checkNeighborCollision(grid[i][j], grid[i + 1][j]);
+            }
+            if (i + 1 < rows && j + 1 < columns)
+            {
+                checkNeighborCollision(grid[i][j], grid[i + 1][j + 1]);
+            }
             grid[i][j].update(dt);
         }
     }
@@ -100,7 +129,7 @@ void CellSpace::updateCells(double dt)
                 {
                     auto &particlePtr = std::get<0>(outOfBounds);
                     auto &newCell = std::get<1>(outOfBounds);
-                    
+
                     moves.push_back(std::make_tuple(std::move(particlePtr), i, j, std::get<0>(newCell), std::get<1>(newCell)));
                 }
             }

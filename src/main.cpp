@@ -16,29 +16,28 @@
 
 int main(int argc, char **argv)
 {
-
-    CellSpace newspace(10, 10, 100.0);
-    std::vector<double> velocityP = {25.0, 0.0, 0.0};
+    double gridSize = 5.0;
+    int xGridSpan = 500;
+    int yGridSpan = 200;
+    CellSpace newspace(xGridSpan, yGridSpan, gridSize);
+    std::vector<double> velocityP = {100.0, 0.0, 0.0};
     std::vector<double> velocityM = {0.0, 0.0, 0.0};
     std::vector<std::unique_ptr<Particle>> particleDistribution = Dynamics::generateParticleDistribution(200.0, 200.0, 15.0, velocityP, 20);
-    std::vector<std::unique_ptr<Particle>> particleDistributionM = Dynamics::generateParticleDistribution(500.0, 200.0, 20.0, velocityM, 30);
+    std::vector<std::unique_ptr<Particle>> particleDistributionM = Dynamics::generateParticleDistribution(400.0, 200.0, 20.0, velocityM, 100);
 
-    // Move to Cells
-    // Out of CellSpace -> automatic removal
     newspace.populateCells(particleDistribution);
     newspace.populateCells(particleDistributionM);
 
     QApplication app(argc, argv);
 
-    // Create a QGraphicsScene and a QGraphicsView
     QGraphicsScene scene;
     scene.setBackgroundBrush(QBrush(Qt::white));
 
     QGraphicsView view(&scene);
     view.show();
-    view.resize(1200, 800);                       // Create QGraphicsEllipseItems to represent the particles
-    QList<QGraphicsEllipseItem *> particleItems; // Keep track of particle items
-    const double dt = 0.01;                      // Time increment
+    view.resize(1200, 800);
+    QList<QGraphicsEllipseItem *> particleItems;
+    //QList<QGraphicsLineItem *> lineItems;
     QTimer timer;
     QElapsedTimer elapsedTimer;
     elapsedTimer.start();
@@ -49,13 +48,26 @@ int main(int argc, char **argv)
     // Remove old particle items from the scene
     for (auto item : particleItems) {
         scene.removeItem(item);
-        delete item; // Free memory
+        delete item;
     }
-    particleItems.clear(); // Clear the list of particle items
+    particleItems.clear();
 
-    // Update cell space
+    //     for (auto item : lineItems) {
+    //     scene.removeItem(item);
+    //     delete item;
+    // }
+    //lineItems.clear(); 
 
-    newspace.updateCells(dt);
+    // for (int x = 0; x < view.width(); x += gridSize) {
+    //     QGraphicsLineItem *line = scene.addLine(x, 0, x, view.height());
+    //     lineItems.append(line);
+    // }
+    // for (int y = 0; y < view.height(); y += gridSize) {
+    //     QGraphicsLineItem *line = scene.addLine(0, y, view.width(), y);
+    //     lineItems.append(line);
+    // }
+
+    newspace.updateCells(timeStep);
     auto posMatrix = newspace.allParticlePositions();
 
     // Add new particle items to the scene

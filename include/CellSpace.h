@@ -20,7 +20,7 @@ public:
 
 private:
     std::vector<std::vector<Cell>> grid;
-
+    void checkNeighborCollision(Cell&, Cell&);
     unsigned int rows;
     unsigned int columns;
     double cellSize;
