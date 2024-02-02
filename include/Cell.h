@@ -19,6 +19,7 @@ public:
 
     void clear();
     void printParticleList();
+    void checkCollisions();
     std::vector<std::vector<double>> particlePositions();
     void update(double);
     double x_coordinate;

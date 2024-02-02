@@ -82,6 +82,7 @@ void CellSpace::updateCells(double dt)
     {
         for (int j = 0; j < columns; j++)
         {
+            grid[i][j].checkCollisions();
             grid[i][j].update(dt);
         }
     }

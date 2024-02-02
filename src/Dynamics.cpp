@@ -19,7 +19,7 @@ namespace Dynamics
         for (unsigned int i = 0; i < numParticles; i++)
         {
             double velocityFactor = vDistribution(generator);
-            std::vector<double> velocityNoised = {velocity[0] + velocityFactor, velocity[1] + velocityFactor, 0.0};
+            std::vector<double> velocityNoised = {velocity[0] + velocityFactor, velocity[1], 0.0};
 
             std::vector<double> particle_position = {xDistribution(generator), yDistribution(generator), 0};
             std::unique_ptr<Fermion> newParticle = std::make_unique<Fermion>("Electron", electronMass, -eCharge, particle_position, velocityNoised);
@@ -87,7 +87,7 @@ namespace Dynamics
         return std::exp(-interactionLength * x);
     }
 
-    double particleDistance(Particle &particle1, Particle &particle2)
+    double particleDistance(std::unique_ptr<Particle> &particle1, std::unique_ptr<Particle> &particle2)
     {
         auto directionVector = particleDirectionVector(particle1, particle2);
         double distance = 0.0;
@@ -98,35 +98,47 @@ namespace Dynamics
         return std::sqrt(distance);
     }
 
-    std::vector<double> particleDirectionVector(Particle &particle1, Particle &particle2)
+    std::vector<double> particleDirectionVector(std::unique_ptr<Particle> &particle1, std::unique_ptr<Particle> &particle2)
     {
-        auto pos1 = particle1.getPosition();
-        auto pos2 = particle2.getPosition();
+        auto pos1 = particle1->getPosition();
+        auto pos2 = particle2->getPosition();
 
         std::vector<double> vectorFrom1To2 = {pos2[0] - pos1[0], pos2[1] - pos1[1], pos2[2] - pos1[2]};
         return vectorFrom1To2;
     }
-    bool interactFermionFermion(Fermion &fermion1, Fermion &fermion2)
+    bool interactFermionFermion(std::unique_ptr<Particle> &fermion1, std::unique_ptr<Particle> &fermion2)
     {
         std::random_device rd;
         std::mt19937 generator(rd());
         std::uniform_real_distribution<double> propability(0, 1.0);
 
         double distance = particleDistance(fermion1, fermion2);
-
         return exponential(distance) >= propability(generator);
     }
 
-    std::unique_ptr<Boson> summonPhoton(Fermion &fermion1, Fermion &fermion2)
+    void collision(std::unique_ptr<Particle> &fermion1, std::unique_ptr<Particle> &fermion2)
     {
-        std::vector<double> particlePosition = fermion1.getPosition();
         double distance = particleDistance(fermion1, fermion2);
+        double collisionForce = 1 / (1.0 + std::pow(distance, 2));
 
-        double frequency = frequency_factor / (distance * distance);
         std::vector<double> direction = particleDirectionVector(fermion1, fermion2);
-        direction[0] = speedOfLight * direction[0] / distance;
-        direction[1] = speedOfLight * direction[1] / distance;
-        std::unique_ptr<Boson> newPhoton = std::make_unique<Boson>("Photon", 0.0, -eCharge, frequency, particlePosition, direction);
-        return newPhoton;
+        std::vector<double> momentumTransfer{0, 0};
+        momentumTransfer[0] = direction[0] / distance;
+        momentumTransfer[1] = direction[1] / distance;
+
+        auto velocity1 = fermion1->getVelocity();
+        auto velocity2 = fermion2->getVelocity();
+
+        std::vector<double> relativeVelocity = {velocity2[0] - velocity1[0], velocity2[1] - velocity1[1]};
+        double impulseMagnitude = collisionForce * (relativeVelocity[0] * momentumTransfer[0] + relativeVelocity[1] * momentumTransfer[1]);
+        std::vector<double> impulse = {impulseMagnitude * momentumTransfer[0], impulseMagnitude * momentumTransfer[1]};
+        // TODO: Mass Dependance
+        for (int i = 0; i < 2; i++)
+        {
+            velocity1[i] += impulse[i];
+            velocity2[i] -= impulse[i];
+        }
+        fermion1->setVelocity(velocity1);
+        fermion2->setVelocity(velocity2);
     }
 }

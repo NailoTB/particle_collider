@@ -23,12 +23,12 @@ void Cell::printParticleList()
     }
 }
 
-void Cell::addParticle(std::unique_ptr<Particle>& particle)
+void Cell::addParticle(std::unique_ptr<Particle> &particle)
 {
     particles.push_back(std::move(particle));
 }
 
-void Cell::removeParticle(const std::unique_ptr<Particle>& particle)
+void Cell::removeParticle(const std::unique_ptr<Particle> &particle)
 {
     auto newEnd = std::remove(particles.begin(), particles.end(), particle);
     particles.erase(newEnd, particles.end());
@@ -39,7 +39,7 @@ void Cell::clear()
     particles.clear();
 }
 
-std::tuple<int, int> Cell::isOutOfBounds(std::unique_ptr<Particle>& particle, int selfRow, int selfColumn)
+std::tuple<int, int> Cell::isOutOfBounds(std::unique_ptr<Particle> &particle, int selfRow, int selfColumn)
 {
     // Returns the index of the new cell
     int newRow = selfRow;
@@ -91,21 +91,32 @@ void Cell::update(double dt)
             outOfBoundsParticles.push_back(std::make_tuple(std::move(particle), outOfBounds));
         }
     }
-
-    // TODO: Include collisions
 }
-    std::vector<std::vector<double>> Cell::particlePositions(){
-        std::vector<std::vector<double>> positionMatrix;
-        for (auto& particle : particles){
-            auto pos = particle->getPosition();
-            positionMatrix.push_back(pos);
-        }
-        return positionMatrix;
-    };
+std::vector<std::vector<double>> Cell::particlePositions()
+{
+    std::vector<std::vector<double>> positionMatrix;
+    for (auto &particle : particles)
+    {
+        auto pos = particle->getPosition();
+        positionMatrix.push_back(pos);
+    }
+    return positionMatrix;
+};
 
-// void Cell::checkCollisions()
-//{
-//  Implement collision detection between particles within this cell
-//}
+void Cell::checkCollisions()
+{
+    for (size_t i = 0; i < particles.size(); ++i)
+    {
+        for (size_t j = i + 1; j < particles.size(); ++j)
+        {
+            // Compare particles at index i and j
+            auto& particle1 = particles[i];
+            auto& particle2 = particles[j];
+            if (Dynamics::interactFermionFermion(particle1, particle2)){
+                Dynamics::collision(particle1, particle2);
+            }
+        }
+    }
+}
 
 // Other cell-related methods

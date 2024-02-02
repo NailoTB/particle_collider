@@ -18,12 +18,15 @@ int main(int argc, char **argv)
 {
 
     CellSpace newspace(10, 10, 100.0);
-    std::vector<double> velocityP = {40.0, 0, 0.0};
-    std::vector<double> velocityM = {-40.0, 0, 0.0};
-    std::vector<std::unique_ptr<Particle>> particleDistribution = Dynamics::generateParticleDistribution(70.0, 70.0, 10.0, velocityP, 500);
+    std::vector<double> velocityP = {25.0, 0.0, 0.0};
+    std::vector<double> velocityM = {0.0, 0.0, 0.0};
+    std::vector<std::unique_ptr<Particle>> particleDistribution = Dynamics::generateParticleDistribution(200.0, 200.0, 15.0, velocityP, 20);
+    std::vector<std::unique_ptr<Particle>> particleDistributionM = Dynamics::generateParticleDistribution(500.0, 200.0, 20.0, velocityM, 30);
+
     // Move to Cells
     // Out of CellSpace -> automatic removal
     newspace.populateCells(particleDistribution);
+    newspace.populateCells(particleDistributionM);
 
     QApplication app(argc, argv);
 
@@ -33,14 +36,16 @@ int main(int argc, char **argv)
 
     QGraphicsView view(&scene);
     view.show();
-    view.resize(800, 600);                       // Create QGraphicsEllipseItems to represent the particles
+    view.resize(1200, 800);                       // Create QGraphicsEllipseItems to represent the particles
     QList<QGraphicsEllipseItem *> particleItems; // Keep track of particle items
     const double dt = 0.01;                      // Time increment
     QTimer timer;
     QElapsedTimer elapsedTimer;
     elapsedTimer.start();
+
     QObject::connect(&timer, &QTimer::timeout, [&]()
                      {
+
     // Remove old particle items from the scene
     for (auto item : particleItems) {
         scene.removeItem(item);
@@ -49,6 +54,7 @@ int main(int argc, char **argv)
     particleItems.clear(); // Clear the list of particle items
 
     // Update cell space
+
     newspace.updateCells(dt);
     auto posMatrix = newspace.allParticlePositions();
 
