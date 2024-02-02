@@ -10,3 +10,7 @@ Go to ``bin/`` and run
 cmake --build .
 ./ParticleSimulator
 ```
+
+<p align="center">
+  <img height="400" src="https://github.com/NailoTB/particle_collider/tree/main/figures/basic_collision.gif">
+</p>
