@@ -63,7 +63,6 @@ void CellSpace::populateCells(std::vector<std::unique_ptr<Particle>> &particleVe
 std::vector<std::vector<double>> CellSpace::allParticlePositions()
 {
     std::vector<std::vector<double>> allParticlePositions;
-
     for (auto &cellRow : grid)
     {
         for (auto &cell : cellRow)
@@ -142,8 +141,15 @@ void CellSpace::updateCells(double dt)
         int oldRow = std::get<1>(move), oldCol = std::get<2>(move);
         int newRow = std::get<3>(move), newCol = std::get<4>(move);
 
-        //  Add bounds checking for newRow and newCol here
-        grid[newRow][newCol].addParticle(particle);
+        if (newRow == 0 || newCol == 0 || newRow == rows - 1 || newCol == columns - 1)
+        {
+            grid[newRow][newCol].addParticle(particle);
+            grid[newRow][newCol].clear();
+        }
+        else
+        {
+            grid[newRow][newCol].addParticle(particle);
+        }
         grid[oldRow][oldCol].removeParticle(particle);
     }
 
@@ -155,4 +161,3 @@ void CellSpace::updateCells(double dt)
         }
     }
 }
-// TODO: Move particles to new Cells

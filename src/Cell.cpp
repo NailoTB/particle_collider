@@ -37,6 +37,7 @@ void Cell::removeParticle(const std::unique_ptr<Particle> &particle)
 void Cell::clear()
 {
     particles.clear();
+    outOfBoundsParticles.clear();
 }
 
 std::tuple<int, int> Cell::isOutOfBounds(std::unique_ptr<Particle> &particle, int selfRow, int selfColumn)
@@ -100,6 +101,7 @@ std::vector<std::vector<double>> Cell::particlePositions()
         auto pos = particle->getPosition();
         positionMatrix.push_back(pos);
     }
+
     return positionMatrix;
 };
 
@@ -110,9 +112,10 @@ void Cell::checkCollisions()
         for (size_t j = i + 1; j < particles.size(); ++j)
         {
             // Compare particles at index i and j
-            auto& particle1 = particles[i];
-            auto& particle2 = particles[j];
-            if (Dynamics::interactFermionFermion(particle1, particle2)){
+            auto &particle1 = particles[i];
+            auto &particle2 = particles[j];
+            if (Dynamics::interactFermionFermion(particle1, particle2))
+            {
                 Dynamics::collision(particle1, particle2);
             }
         }
