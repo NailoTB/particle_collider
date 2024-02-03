@@ -4,8 +4,6 @@ This project is a semi-classical particle simulator designed to simulate interac
 TODO: Fancier interactions
 
 ## How to Run
-Go to ``bin/`` and run 
-
 ```
 cmake --build .
 ./ParticleSimulator

@@ -9,32 +9,6 @@ Particle::Particle(const std::string &name, const double mass, const double char
                    const std::vector<double> &position, const std::vector<double> &velocity)
     : name(name), mass(mass), charge(charge), position(position), velocity(velocity)
 {
-    updateFourMomentum();
-}
-
-void Particle::updateFourMomentum()
-{
-    double gammaMass = Dynamics::gamma(velocity) * mass;
-
-    std::vector<double> threeMomentum = {gammaMass * velocity[0], gammaMass * velocity[1], gammaMass * velocity[2]};
-    double velocitySquare = std::pow(Dynamics::velocityNorm(threeMomentum), 2);
-    double energyUpdated = std::sqrt(velocitySquare * std::pow(speedOfLight, 2) + mass * mass * std::pow(speedOfLight, 4));
-
-    energy = energyUpdated;
-    fourMomentum = {energyUpdated / speedOfLight, threeMomentum[0], threeMomentum[1], threeMomentum[2]};
-}
-
-void Particle::addFourMomentum(const std::vector<double>& addedMomentum){
-    for (int i = 0; i < addedMomentum.size() ; i++){
-        fourMomentum[i] = fourMomentum[i] + addedMomentum[i];
-    }
-}
-
-
-void Particle::updateVelocity()
-{
-    double scaleFactor = std::pow(speedOfLight,2)/energy;
-    velocity = {fourMomentum[1] * scaleFactor, fourMomentum[2] * scaleFactor, fourMomentum[3] * scaleFactor};
 }
 
 Particle::~Particle()
@@ -66,10 +40,7 @@ const std::vector<double> &Particle::getVelocity() const
 {
     return velocity;
 }
-const std::vector<double> &Particle::getFourMomentum() const
-{
-    return fourMomentum;
-}
+
 void Particle::setName(const std::string &newName)
 {
     name = newName;

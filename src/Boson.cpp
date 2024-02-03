@@ -9,9 +9,4 @@ Boson::Boson(const std::string& name, double mass, double charge, const double f
     : Particle(name, mass, charge, position, velocity), frequency(frequency)
 {   
     energy = plankConstant * frequency; 
-    updateFourMomentum();
-}
-
-void Boson::updateFourMomentum() {
-    fourMomentum = {energy/speedOfLight, energy*velocity[0]/speedOfLight, energy*velocity[1]/speedOfLight, energy*velocity[2]/speedOfLight};
 }

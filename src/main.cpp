@@ -20,10 +20,10 @@ int main(int argc, char **argv)
     int xGridSpan = 500;
     int yGridSpan = 200;
     CellSpace newspace(xGridSpan, yGridSpan, gridSize);
-    std::vector<double> velocityP = {100.0, 0.0, 0.0};
+    std::vector<double> velocityP = {200.0, 0.0, 0.0};
     std::vector<double> velocityM = {0.0, 0.0, 0.0};
-    std::vector<std::unique_ptr<Particle>> particleDistribution = Dynamics::generateParticleDistribution(200.0, 200.0, 15.0, velocityP, 20);
-    std::vector<std::unique_ptr<Particle>> particleDistributionM = Dynamics::generateParticleDistribution(400.0, 200.0, 20.0, velocityM, 100);
+    std::vector<std::unique_ptr<Particle>> particleDistribution = Dynamics::generateParticleDistribution(200.0, 200.0, 10.0, velocityP, 20);
+    std::vector<std::unique_ptr<Particle>> particleDistributionM = Dynamics::generateParticleDistribution(400.0, 200.0, 30.0, velocityM, 200);
 
     newspace.populateCells(particleDistribution);
     newspace.populateCells(particleDistributionM);
