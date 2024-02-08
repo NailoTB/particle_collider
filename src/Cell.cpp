@@ -2,7 +2,7 @@
 
 #include "Cell.h"
 
-Cell::Cell(double x, double y, double size) : x_coordinate(x), y_coordinate(y), size(size)
+Cell::Cell(const double x, const double y, double size) : x_coordinate(x), y_coordinate(y), size(size)
 {
 }
 void Cell::printParticleList()
@@ -121,5 +121,3 @@ void Cell::checkCollisions()
         }
     }
 }
-
-// Other cell-related methods

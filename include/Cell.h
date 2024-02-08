@@ -16,15 +16,18 @@ public:
     Cell(double x, double y, double size);
     void addParticle(std::unique_ptr<Particle> &particle);
     void removeParticle(const std::unique_ptr<Particle> &particle);
-
     void clear();
+
     void printParticleList();
-    void checkCollisions();
     std::vector<std::vector<double>> particlePositions();
+
     void update(double);
-    double x_coordinate;
-    double y_coordinate;
-    double size; // In the future maybe not constant
+    void checkCollisions();
+
+    const double x_coordinate;
+    const double y_coordinate;
+    const double size; // In the future maybe not constant
+
     std::vector<std::tuple<std::unique_ptr<Particle>, std::tuple<int, int>>> outOfBoundsParticles;
     std::vector<std::unique_ptr<Particle>> particles;
 private:

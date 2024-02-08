@@ -16,14 +16,15 @@
 
 int main(int argc, char **argv)
 {
-    double gridSize = 5.0;
-    int xGridSpan = 500;
-    int yGridSpan = 200;
+    //TODO: gridSize Dependent on interaction length
+    double gridSize = 10;
+    int xGridSpan = 300;
+    int yGridSpan = 100;
     CellSpace newspace(xGridSpan, yGridSpan, gridSize);
-    std::vector<double> velocityP = {200.0, 0.0, 0.0};
-    std::vector<double> velocityM = {0.0, 0.0, 0.0};
-    std::vector<std::unique_ptr<Particle>> particleDistribution = Dynamics::generateParticleDistribution(200.0, 200.0, 10.0, velocityP, 20);
-    std::vector<std::unique_ptr<Particle>> particleDistributionM = Dynamics::generateParticleDistribution(400.0, 200.0, 30.0, velocityM, 200);
+    std::vector<double> velocityP = {70.0, 0.0, 0.0};
+    std::vector<double> velocityM = {-70.0, 0.0, 0.0};
+    std::vector<std::unique_ptr<Particle>> particleDistribution = Dynamics::generateParticleDistribution(200.0, 500.0, 10.0, velocityP, 50);
+    std::vector<std::unique_ptr<Particle>> particleDistributionM = Dynamics::generateParticleDistribution(500.0, 500.0, 10.0, velocityM, 50);
 
     newspace.populateCells(particleDistribution);
     newspace.populateCells(particleDistributionM);
@@ -37,7 +38,7 @@ int main(int argc, char **argv)
     view.show();
     view.resize(1200, 800);
     QList<QGraphicsEllipseItem *> particleItems;
-    //QList<QGraphicsLineItem *> lineItems;
+    QList<QGraphicsLineItem *> lineItems;
     QTimer timer;
     QElapsedTimer elapsedTimer;
     elapsedTimer.start();
@@ -56,7 +57,7 @@ int main(int argc, char **argv)
     //     scene.removeItem(item);
     //     delete item;
     // }
-    //lineItems.clear(); 
+    // lineItems.clear(); 
 
     // for (int x = 0; x < view.width(); x += gridSize) {
     //     QGraphicsLineItem *line = scene.addLine(x, 0, x, view.height());
