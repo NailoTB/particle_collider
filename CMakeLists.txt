@@ -17,6 +17,7 @@ find_package(Qt5 COMPONENTS Widgets REQUIRED)
 include_directories(${Qt5Widgets_INCLUDE_DIRS})
 # Add source files
 set(SOURCES
+    src/VectorMath.cpp
     src/Particle.cpp
     src/Cell.cpp
     src/CellSpace.cpp

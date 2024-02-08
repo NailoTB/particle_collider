@@ -7,6 +7,7 @@
 #include "Fermion.h"
 #include "Boson.h"
 #include "Constants.h"
+#include "VectorMath.h"
 #include <cmath>
 #include <random>
 #include <memory>

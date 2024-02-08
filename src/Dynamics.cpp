@@ -45,25 +45,6 @@ namespace Dynamics
         particle->setPosition(newPosition);
     }
 
-    double velocityNorm(const std::vector<double> &velocityVector)
-    {
-        double velocity = 0.0;
-        for (double v_i : velocityVector)
-        {
-            velocity += v_i * v_i;
-        }
-        return std::sqrt(velocity);
-    }
-    double dotProduct(const std::vector<double> &vector1, const std::vector<double> &vector2)
-    {
-        double product = 0.0;
-        for (int i = 0; i < vector1.size(); i++)
-        {
-            product += vector1[i] * vector2[i];
-        }
-        return product;
-    }
-
     double exponential(double x)
     {
         return std::exp(-interactionLength * x);
@@ -72,12 +53,7 @@ namespace Dynamics
     double particleDistance(std::unique_ptr<Particle> &particle1, std::unique_ptr<Particle> &particle2)
     {
         auto directionVector = particleDirectionVector(particle1, particle2);
-        double distance = 0.0;
-        for (int i = 0; i < directionVector.size(); i++)
-        {
-            distance += std::pow(directionVector[i], 2);
-        }
-        return std::sqrt(distance);
+        return VectorMath::norm(directionVector);
     }
 
     std::vector<double> particleDirectionVector(std::unique_ptr<Particle> &particle1, std::unique_ptr<Particle> &particle2)
@@ -85,8 +61,7 @@ namespace Dynamics
         auto pos1 = particle1->getPosition();
         auto pos2 = particle2->getPosition();
 
-        std::vector<double> vectorFrom1To2 = {pos1[0] - pos2[0], pos1[1] - pos2[1], pos1[2] - pos2[2]};
-        return vectorFrom1To2;
+        return VectorMath::subtraction(pos1, pos2);
     }
     bool interactFermionFermion(std::unique_ptr<Particle> &fermion1, std::unique_ptr<Particle> &fermion2)
     {
@@ -100,6 +75,7 @@ namespace Dynamics
 
     void collision(std::unique_ptr<Particle> &fermion1, std::unique_ptr<Particle> &fermion2)
     {
+        //TODO: Refactor this function
         double distance = particleDistance(fermion1, fermion2);
         double m1 = fermion1->getMass();
         double m2 = fermion2->getMass();
@@ -119,10 +95,10 @@ namespace Dynamics
         auto velocity1 = fermion1->getVelocity();
         auto velocity2 = fermion2->getVelocity();
 
-        double v1t = dotProduct(velocity1, momentumTransferTangent);
-        double v2t = dotProduct(velocity2, momentumTransferTangent);
-        double v1n = dotProduct(velocity1, momentumTransferDirection);
-        double v2n = dotProduct(velocity2, momentumTransferDirection);
+        double v1t = VectorMath::dotProduct(velocity1, momentumTransferTangent);
+        double v2t = VectorMath::dotProduct(velocity2, momentumTransferTangent);
+        double v1n = VectorMath::dotProduct(velocity1, momentumTransferDirection);
+        double v2n = VectorMath::dotProduct(velocity2, momentumTransferDirection);
 
         double collisionForce = 1.0 / (1.0 + std::pow(distance, 2));
         double inertiaFactor = 1 - collisionForce;
