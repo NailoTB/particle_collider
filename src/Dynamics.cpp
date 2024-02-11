@@ -21,8 +21,8 @@ namespace Dynamics
             double velocityFactor = vDistribution(generator);
             std::vector<double> velocityNoised = {velocity[0] + velocityFactor, velocity[1], 0.0};
 
-            std::vector<double> particle_position = {xDistribution(generator), yDistribution(generator), 0};
-            std::unique_ptr<Fermion> newParticle = std::make_unique<Fermion>("Electron", electronMass, -eCharge, particle_position, velocityNoised);
+            std::vector<double> particlePosition = {xDistribution(generator), yDistribution(generator), 0};
+            std::unique_ptr<Fermion> newParticle = std::make_unique<Fermion>("Electron", electronMass, -eCharge, particlePosition, velocityNoised);
             generatedParticles.push_back(std::move(newParticle));
         }
         return generatedParticles;
