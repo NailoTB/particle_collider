@@ -1,28 +1,18 @@
 #ifndef SIMULATIONWINDOW_H
 #define SIMULATIONWINDOW_H
 
-#include <QMainWindow>
-#include <QObject>
-#include <QWidget>
-#include <QTimer>
-#include <QSlider>
-#include <QPushButton>
-#include <QGraphicsScene>
-#include <QGraphicsView>
 #include <QApplication>
+#include <QTimer>
+#include <QMainWindow>
 #include <QGraphicsScene>
 #include <QGraphicsView>
-#include <QGraphicsEllipseItem>
-#include <QTimer>
-#include <QBrush>
-#include <QElapsedTimer>
-#include <QVBoxLayout>
-#include <QSlider>
-#include <QPushButton>
 #include <QToolBar>
-#include <QCloseEvent>
-#include <iostream>
+#include <QBrush>
+#include <QGraphicsEllipseItem>
+#include <QPushButton>
+
 #include "CellSpace.h"
+
 class SimulationWindow : public QMainWindow
 {
     Q_OBJECT
