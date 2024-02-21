@@ -12,8 +12,8 @@ int main(int argc, char **argv)
 {
     // TODO: gridSize Dependent on interaction length
     double gridSize = 10;
-    int xGridSpan = 300;
-    int yGridSpan = 100;
+    int xGridSpan = 140;
+    int yGridSpan = 80;
     CellSpace newspace(xGridSpan, yGridSpan, gridSize);
     std::vector<double> velocityP = {70.0, 0.0, 0.0};
     std::vector<double> velocityM = {-70.0, 0.0, 0.0};
@@ -27,6 +27,7 @@ int main(int argc, char **argv)
     SimulationWindow *window = new SimulationWindow();
     window->loadCellSpace(&newspace);
     window->show();
+    window->redraw();
     int execResult = app.exec();
 
     delete window;

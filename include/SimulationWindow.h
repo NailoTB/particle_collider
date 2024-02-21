@@ -22,7 +22,8 @@ class SimulationWindow : public QMainWindow
 public:
     explicit SimulationWindow(QMainWindow *parent = 0);
     void loadCellSpace(CellSpace *);
-
+    void redraw();
+    void flushView();
 signals:
 
 protected:
@@ -31,8 +32,6 @@ private slots:
     void startPauseButtonClicked();
     void clearParticles();
     void updateSimulation();
-    void flushView();
-    void redraw();
 private:
     CellSpace *simulationCellSpace; // TODO: replace with dynamic cell space with user adding particles
     QList<QGraphicsEllipseItem *> particleItems;

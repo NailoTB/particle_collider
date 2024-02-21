@@ -7,6 +7,10 @@ SimulationWindow::SimulationWindow(QMainWindow *parent) : QMainWindow(parent), s
 
     simulationView = new QGraphicsView(scene, this);
     simulationView->setFixedSize(1400, 800);
+    simulationView->setSceneRect(0,0, 1400, 800);
+    simulationView->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    simulationView->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+
     pauseButton = new QPushButton("Start", this);
     resetButton = new QPushButton("Reset", this);
     velocitySlider = new QSlider(Qt::Horizontal, this);
@@ -24,12 +28,9 @@ SimulationWindow::SimulationWindow(QMainWindow *parent) : QMainWindow(parent), s
 
     connect(pauseButton, &QPushButton::clicked, this, &SimulationWindow::startPauseButtonClicked);
     connect(resetButton, &QPushButton::clicked, this, &SimulationWindow::clearParticles);
-    // QObject::connect(velocitySlider, &QSlider::valueChanged, [&label](int value)
-    //                  { label->setText("On L-Click generating particles with velocity: " + QString::number(value)); });
+
     setCentralWidget(simulationView);
     addToolBar(Qt::RightToolBarArea, toolbar);
-
-    // resize(1400, 800);
 
     timer = new QTimer(this);
     connect(timer, &QTimer::timeout, this, &SimulationWindow::updateSimulation);
@@ -43,11 +44,9 @@ void SimulationWindow::mousePressEvent(QMouseEvent *event)
 
     if (event->button() == Qt::LeftButton && xPos < simulationView->width() && !simulationRunning)
     {
-        qDebug() << "Adding particles";
         std::vector<std::unique_ptr<Particle>> particleDistribution = Dynamics::generateParticleDistribution(xPos, yPos, 5.0, {(double)velocitySlider->value(), 0, 0}, 10);
         simulationCellSpace->populateCells(particleDistribution);
         redraw();
-        //flushView();
     }
 }
 
@@ -79,6 +78,7 @@ void SimulationWindow::clearParticles()
     {
         timer->stop();
         pauseButton->setText("Start");
+        simulationRunning = !simulationRunning;
     }
     for (auto item : particleItems)
     {

@@ -2,7 +2,7 @@
 
 #include "CellSpace.h"
 
-CellSpace::CellSpace(unsigned int rows, unsigned int columns, double cellSize) : rows(rows), columns(columns), cellSize(cellSize)
+CellSpace::CellSpace(unsigned int columns, unsigned int rows, double cellSize) : rows(rows), columns(columns), cellSize(cellSize)
 {
     createGrid();
 }
