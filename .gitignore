@@ -4,4 +4,6 @@ CMakeCache.txt
 cmake_install.cmake
 Makefile
 bin/*
-ParticleSimulator
+ParticleCollider
+.qt/*
+ParticleCollider_autogen/*
