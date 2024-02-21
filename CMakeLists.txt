@@ -29,6 +29,8 @@ set(SOURCES
     include/SimulationWindow.h
 )
 
+SET(CMAKE_CXX_FLAGS "-O2")
+
 # Add executable
 add_executable(${PROJECT_NAME} ${SOURCES})
 

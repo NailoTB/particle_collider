@@ -27,6 +27,7 @@ protected:
 
 private slots:
     void startPauseButtonClicked();
+    void clearParticles();
     void updateSimulation();
 
 private:
@@ -35,6 +36,7 @@ private:
 
     QTimer *timer;
     QPushButton *pauseButton;
+    QPushButton *resetButton;
     QGraphicsView *simulationView;
     QGraphicsScene *scene;
     bool simulationRunning;

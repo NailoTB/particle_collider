@@ -17,6 +17,7 @@ public:
     std::vector<std::vector<double>> allParticlePositions();
     void populateCells(std::vector<std::unique_ptr<Particle>> &);
     void updateCells(double);
+    void clearCells();
 
 private:
     std::vector<std::vector<Cell>> grid;
@@ -25,7 +26,6 @@ private:
     unsigned int columns;
     double cellSize;
     void createGrid();
-    void clearCells();
 };
 
 #endif // CELLSPACE_H

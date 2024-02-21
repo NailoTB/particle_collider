@@ -8,12 +8,16 @@ SimulationWindow::SimulationWindow(QMainWindow *parent) : QMainWindow(parent), s
     simulationView = new QGraphicsView(scene, this);
 
     pauseButton = new QPushButton("Start", this);
+    resetButton = new QPushButton("Reset", this);
 
     QToolBar *toolbar = new QToolBar;
     toolbar->setFloatable(false);
     toolbar->setMovable(false);
     toolbar->addWidget(pauseButton);
+    toolbar->addWidget(resetButton);
     connect(pauseButton, &QPushButton::clicked, this, &SimulationWindow::startPauseButtonClicked);
+    connect(resetButton, &QPushButton::clicked, this, &SimulationWindow::clearParticles);
+
     setCentralWidget(simulationView);
     addToolBar(Qt::RightToolBarArea, toolbar);
 
@@ -23,7 +27,8 @@ SimulationWindow::SimulationWindow(QMainWindow *parent) : QMainWindow(parent), s
     connect(timer, &QTimer::timeout, this, &SimulationWindow::updateSimulation);
 }
 
-void SimulationWindow::loadCellSpace(CellSpace* cellSpace){
+void SimulationWindow::loadCellSpace(CellSpace *cellSpace)
+{
     simulationCellSpace = cellSpace;
 }
 
@@ -43,6 +48,21 @@ void SimulationWindow::startPauseButtonClicked()
     simulationRunning = !simulationRunning;
 }
 
+void SimulationWindow::clearParticles()
+{
+
+    if (simulationRunning)
+    {
+        timer->stop();
+    }
+    for (auto item : particleItems)
+    {
+        scene->removeItem(item);
+    }
+    particleItems.clear();
+    simulationCellSpace->clearCells();
+}
+
 void SimulationWindow::updateSimulation()
 {
     for (auto item : particleItems)
@@ -52,6 +72,7 @@ void SimulationWindow::updateSimulation()
     particleItems.clear();
 
     simulationCellSpace->updateCells(timeStep);
+
     auto posMatrix = simulationCellSpace->allParticlePositions();
 
     for (auto pos : posMatrix)
