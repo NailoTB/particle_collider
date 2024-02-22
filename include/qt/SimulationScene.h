@@ -1,12 +1,12 @@
 #ifndef QT_SIMULATIONSCENE_H
 #define QT_SIMULATIONSCENE_H
 
-#include "CellSpace.h"
-
 #include <QTimer>
 #include <QGraphicsScene>
 #include <QGraphicsEllipseItem>
 #include <QGraphicsView>
+
+#include "CellSpace.h"
 
 class SimulationScene : public QGraphicsScene
 {
