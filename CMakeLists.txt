@@ -26,7 +26,9 @@ set(SOURCES
     src/Boson.cpp
     src/main.cpp
     src/SimulationWindow.cpp
+    src/SimulationToolBar.cpp
     include/SimulationWindow.h
+    include/SimulationToolBar.h
 )
 
 SET(CMAKE_CXX_FLAGS "-O2")

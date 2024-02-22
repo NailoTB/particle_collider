@@ -14,6 +14,7 @@
 #include <QLabel>
 #include <QMouseEvent>
 #include "CellSpace.h"
+#include "SimulationToolBar.h"
 
 class SimulationWindow : public QMainWindow
 {
@@ -37,10 +38,7 @@ private:
     QList<QGraphicsEllipseItem *> particleItems;
 
     QTimer *timer;
-    QPushButton *pauseButton;
-    QPushButton *resetButton;
-    QSlider *velocitySlider;
-    QToolBar *toolbar;
+    SimulationToolBar *toolbar;
     QGraphicsView *simulationView;
     QGraphicsScene *scene;
     bool simulationRunning;

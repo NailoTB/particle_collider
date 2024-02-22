@@ -11,23 +11,10 @@ SimulationWindow::SimulationWindow(QMainWindow *parent) : QMainWindow(parent), s
     simulationView->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     simulationView->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 
-    pauseButton = new QPushButton("Start", this);
-    resetButton = new QPushButton("Reset", this);
-    velocitySlider = new QSlider(Qt::Horizontal, this);
 
-    velocitySlider->setMinimum(-50);
-    velocitySlider->setMaximum(50);
-    velocitySlider->setValue(0);
-
-    toolbar = new QToolBar(this);
-    toolbar->setFloatable(false);
-    toolbar->setMovable(false);
-    toolbar->addWidget(pauseButton);
-    toolbar->addWidget(resetButton);
-    toolbar->addWidget(velocitySlider);
-
-    connect(pauseButton, &QPushButton::clicked, this, &SimulationWindow::startPauseButtonClicked);
-    connect(resetButton, &QPushButton::clicked, this, &SimulationWindow::clearParticles);
+    toolbar = new SimulationToolBar();
+    connect(toolbar, &SimulationToolBar::pausePressed, this, &SimulationWindow::startPauseButtonClicked);
+    connect(toolbar, &SimulationToolBar::resetPressed, this, &SimulationWindow::clearParticles);
 
     setCentralWidget(simulationView);
     addToolBar(Qt::RightToolBarArea, toolbar);
@@ -44,7 +31,8 @@ void SimulationWindow::mousePressEvent(QMouseEvent *event)
 
     if (event->button() == Qt::LeftButton && xPos < simulationView->width() && !simulationRunning)
     {
-        std::vector<std::unique_ptr<Particle>> particleDistribution = Dynamics::generateParticleDistribution(xPos, yPos, 5.0, {(double)velocitySlider->value(), 0, 0}, 10);
+        
+        std::vector<std::unique_ptr<Particle>> particleDistribution = Dynamics::generateParticleDistribution(xPos, yPos, 5.0, {(double)toolbar->velocitySliderValue(), 0, 0}, 10);
         simulationCellSpace->populateCells(particleDistribution);
         redraw();
     }
@@ -57,16 +45,13 @@ void SimulationWindow::loadCellSpace(CellSpace *cellSpace)
 
 void SimulationWindow::startPauseButtonClicked()
 {
-
     if (simulationRunning)
     {
         timer->stop();
-        pauseButton->setText("Start");
     }
     else
     {
         timer->start(10);
-        pauseButton->setText("Pause");
     }
     simulationRunning = !simulationRunning;
 }
@@ -77,7 +62,6 @@ void SimulationWindow::clearParticles()
     if (simulationRunning)
     {
         timer->stop();
-        pauseButton->setText("Start");
         simulationRunning = !simulationRunning;
     }
     for (auto item : particleItems)
