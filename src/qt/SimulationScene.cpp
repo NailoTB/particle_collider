@@ -28,13 +28,13 @@ void SimulationScene::createParticlesOnPoint(const int &xPos, const int &yPos, c
     redraw();
 }
 
-void SimulationScene::clearParticleItems()
+void SimulationScene::clearPreviousParticleGraphics()
 {
-    for (auto item : particleItems)
+    for (auto item : previousTimestepParticleGraphics)
     {
         removeItem(item);
     }
-    particleItems.clear();
+    previousTimestepParticleGraphics.clear();
 }
 
 void SimulationScene::setTimerRunState(bool state)
@@ -44,7 +44,7 @@ void SimulationScene::setTimerRunState(bool state)
 
 void SimulationScene::updateParticlePositions()
 {
-    clearParticleItems();
+    clearPreviousParticleGraphics();
     simulationCellSpace->updateCells(timeStep);
     redraw();
 }
@@ -53,13 +53,13 @@ void SimulationScene::clearParticles()
 {
 
     timer->stop();
-    clearParticleItems();
+    clearPreviousParticleGraphics();
     simulationCellSpace->clearCells();
 }
 
 void SimulationScene::flushView()
 {
-    clearParticleItems();
+    clearPreviousParticleGraphics();
     simulationView->viewport()->update();
 }
 
@@ -72,7 +72,7 @@ void SimulationScene::redraw()
         QGraphicsEllipseItem *particleItem = new QGraphicsEllipseItem(pos[0], pos[1], 3, 3);
         particleItem->setBrush(QBrush(Qt::blue));
         addItem(particleItem);
-        particleItems.append(particleItem);
+        previousTimestepParticleGraphics.append(particleItem);
     }
     simulationView->viewport()->update();
 }

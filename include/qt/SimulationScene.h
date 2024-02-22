@@ -22,14 +22,14 @@ public:
 signals:
 private slots:
 
-    void clearParticleItems();
+    void clearPreviousParticleGraphics();
     void updateParticlePositions();
     void flushView();
     void redraw();
 
 private:
     CellSpace *simulationCellSpace;
-    QList<QGraphicsEllipseItem *> particleItems;
+    QList<QGraphicsEllipseItem *> previousTimestepParticleGraphics;
     QGraphicsView *simulationView;
     QTimer *timer;
 };
