@@ -24,6 +24,7 @@ protected:
 private slots:
     void startPauseButtonClicked(bool);
     void clearParticles();
+    void updateParticleCountInToolbar(int);
 private:
     SimulationToolBar *toolbar;
     SimulationScene *scene;

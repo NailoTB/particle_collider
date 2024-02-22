@@ -7,7 +7,7 @@ SimulationWindow::SimulationWindow(QMainWindow *parent) : QMainWindow(parent)
 
     connect(toolbar, &SimulationToolBar::pausePressed, this, &SimulationWindow::startPauseButtonClicked);
     connect(toolbar, &SimulationToolBar::resetPressed, this, &SimulationWindow::clearParticles);
-
+    connect(scene, &SimulationScene::particleCount, this, &SimulationWindow::updateParticleCountInToolbar);
     setCentralWidget(scene->views()[0]);
     addToolBar(Qt::RightToolBarArea, toolbar);
 }
@@ -25,6 +25,11 @@ void SimulationWindow::mousePressEvent(QMouseEvent *event)
     {
         scene->createParticlesOnPoint(xPos, yPos, toolbar->velocitySliderValue());
     }
+}
+
+void SimulationWindow::updateParticleCountInToolbar(int particleCount)
+{
+    toolbar->updateParticleCount(particleCount);
 }
 
 void SimulationWindow::startPauseButtonClicked(bool isRunning)

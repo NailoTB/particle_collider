@@ -12,6 +12,7 @@ SimulationScene::SimulationScene(QGraphicsScene *parent) : QGraphicsScene(parent
 
     timer = new QTimer(this);
     connect(timer, &QTimer::timeout, this, &SimulationScene::updateParticlePositions);
+    connect(timer, &QTimer::timeout, this, &SimulationScene::updateParticleCount);
 }
 
 void SimulationScene::loadCellSpace(CellSpace *cellSpace)
@@ -75,4 +76,7 @@ void SimulationScene::redraw()
         previousTimestepParticleGraphics.append(particleItem);
     }
     simulationView->viewport()->update();
+}
+void SimulationScene::updateParticleCount(){
+    emit particleCount(simulationCellSpace->allParticlePositions().size());
 }
