@@ -12,10 +12,11 @@
 int main(int argc, char **argv)
 {
     // TODO: gridSize Dependent on interaction length
+    double xLength = 1400;
+    double yLength = 800;
     double gridSize = 10;
-    int xGridSpan = 140;
-    int yGridSpan = 80;
-    CellSpace newspace(xGridSpan, yGridSpan, gridSize);
+    
+    CellSpace newspace(int(xLength/gridSize), int(yLength/gridSize), gridSize);
     std::vector<double> velocityP = {70.0, 0.0, 0.0};
     std::vector<double> velocityM = {-70.0, 0.0, 0.0};
     std::vector<std::unique_ptr<Particle>> particleDistribution = Dynamics::generateParticleDistribution(200.0, 500.0, 10.0, velocityP, 50);
