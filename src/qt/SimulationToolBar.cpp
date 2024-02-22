@@ -1,6 +1,6 @@
-#include "SimulationToolBar.h"
+#include "qt/SimulationToolBar.h"
 
-SimulationToolBar::SimulationToolBar(QToolBar *parent) : QToolBar(parent), simulationRunning(false)
+SimulationToolBar::SimulationToolBar(QToolBar *parent) : QToolBar(parent)
 {
     pauseButton = new QPushButton("Start", this);
     resetButton = new QPushButton("Reset", this);
@@ -23,7 +23,7 @@ SimulationToolBar::SimulationToolBar(QToolBar *parent) : QToolBar(parent), simul
 void SimulationToolBar::pauseButtonPressed()
 {
     flipPauseButtonState();
-    emit pausePressed();
+    emit pausePressed(pauseButton->text() == "Pause"); //Emits isRunning
 }
 void SimulationToolBar::resetButtonPressed()
 {

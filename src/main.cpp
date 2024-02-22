@@ -3,10 +3,11 @@
 #include "Fermion.h"
 #include "Dynamics.h"
 #include "CellSpace.h"
-#include "SimulationWindow.h"
+#include "qt/SimulationWindow.h"
 
 #include <stdio.h>
 #include <memory>
+#include <QApplication>
 
 int main(int argc, char **argv)
 {
@@ -25,9 +26,8 @@ int main(int argc, char **argv)
 
     QApplication app(argc, argv);
     SimulationWindow *window = new SimulationWindow();
-    window->loadCellSpace(&newspace);
+    window->passCellSpaceToScene(&newspace);
     window->show();
-    window->redraw();
     int execResult = app.exec();
 
     delete window;

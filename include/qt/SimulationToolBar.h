@@ -1,13 +1,10 @@
-#ifndef SIMULATIONTOOLBAR_H
-#define SIMULATIONTOOLBAR_H
+#ifndef QT_SIMULATIONTOOLBAR_H
+#define QT_SIMULATIONTOOLBAR_H
 
-#include <QApplication>
-#include <QTimer>
 #include <QToolBar>
 #include <QPushButton>
 #include <QSlider>
 #include <QLabel>
-#include "CellSpace.h"
 
 class SimulationToolBar : public QToolBar
 {
@@ -17,19 +14,16 @@ public:
     explicit SimulationToolBar(QToolBar *parent = 0);
     int velocitySliderValue();
 signals:
-    void pausePressed();
+    void pausePressed(bool isPaused);
     void resetPressed();
 private slots:
     void pauseButtonPressed();
     void resetButtonPressed();
     void flipPauseButtonState();
 private:
-
-    QTimer *timer;
     QPushButton *pauseButton;
     QPushButton *resetButton;
     QSlider *velocitySlider;
-    bool simulationRunning;
 };
 
-#endif // SIMULATIONTOOLBAR_H
+#endif // QT_SIMULATIONTOOLBAR_H

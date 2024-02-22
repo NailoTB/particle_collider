@@ -25,10 +25,12 @@ set(SOURCES
     src/Fermion.cpp
     src/Boson.cpp
     src/main.cpp
-    src/SimulationWindow.cpp
-    src/SimulationToolBar.cpp
-    include/SimulationWindow.h
-    include/SimulationToolBar.h
+    src/qt/SimulationWindow.cpp
+    src/qt/SimulationToolBar.cpp
+    src/qt/SimulationScene.cpp
+    include/qt/SimulationWindow.h
+    include/qt/SimulationToolBar.h
+    include/qt/SimulationScene.h
 )
 
 SET(CMAKE_CXX_FLAGS "-O2")
