@@ -51,9 +51,6 @@ void CellSpace::populateCells(std::vector<std::unique_ptr<Particle>> &particleVe
 
         if (xCell >= columns || yCell >= rows)
         {
-            // TODO: negative case
-            // TODO: Flag particle for deletion
-            // std::cout << "Particle out of grid space" << '\n';
             continue;
         }
         grid[yCell][xCell].addParticle(particle);
