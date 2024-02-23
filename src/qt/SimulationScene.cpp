@@ -10,9 +10,11 @@ SimulationScene::SimulationScene(QGraphicsScene *parent) : QGraphicsScene(parent
     simulationView->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     simulationView->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 
-    timer = new QTimer(this);
-    connect(timer, &QTimer::timeout, this, &SimulationScene::updateParticlePositions);
-    connect(timer, &QTimer::timeout, this, &SimulationScene::updateParticleCount);
+    simulationTimer = new QTimer(this);
+    particleCountTimer = new QTimer(this);
+    particleCountTimer->start(100);
+    connect(simulationTimer, &QTimer::timeout, this, &SimulationScene::updateParticlePositions);
+    connect(particleCountTimer, &QTimer::timeout, this, &SimulationScene::updateParticleCount);
 }
 
 void SimulationScene::loadCellSpace(CellSpace *cellSpace)
@@ -40,7 +42,7 @@ void SimulationScene::clearPreviousParticleGraphics()
 
 void SimulationScene::setTimerRunState(bool state)
 {
-    state ? timer->start(10) : timer->stop();
+    state ? simulationTimer->start(10) : simulationTimer->stop();
 }
 
 void SimulationScene::updateParticlePositions()
@@ -53,7 +55,7 @@ void SimulationScene::updateParticlePositions()
 void SimulationScene::clearParticles()
 {
 
-    timer->stop();
+    simulationTimer->stop();
     clearPreviousParticleGraphics();
     simulationCellSpace->clearCells();
 }

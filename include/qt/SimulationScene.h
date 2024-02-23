@@ -31,7 +31,8 @@ private:
     CellSpace *simulationCellSpace;
     QList<QGraphicsEllipseItem *> previousTimestepParticleGraphics;
     QGraphicsView *simulationView;
-    QTimer *timer;
+    QTimer *simulationTimer;
+    QTimer *particleCountTimer;
 };
 
 #endif // SIMULATIONSCENE_H
