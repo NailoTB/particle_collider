@@ -5,7 +5,7 @@ SimulationToolBar::SimulationToolBar(QToolBar *parent) : QToolBar(parent)
     pauseButton = new QPushButton("Start", this);
     resetButton = new QPushButton("Reset", this);
     velocitySlider = new QSlider(Qt::Horizontal, this);
-    particleCounter = new QLabel("Particle Count: 100");
+    particleCounter = new QLabel("Particle Count: 400");
 
     velocitySlider->setMinimum(-50);
     velocitySlider->setMaximum(50);

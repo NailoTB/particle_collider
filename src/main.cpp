@@ -19,8 +19,8 @@ int main(int argc, char **argv)
     CellSpace newspace(int(xLength/gridSize), int(yLength/gridSize), gridSize);
     std::vector<double> velocityP = {70.0, 0.0, 0.0};
     std::vector<double> velocityM = {-70.0, 0.0, 0.0};
-    std::vector<std::unique_ptr<Particle>> particleDistribution = Dynamics::generateParticleDistribution(200.0, 500.0, 10.0, velocityP, 50);
-    std::vector<std::unique_ptr<Particle>> particleDistributionM = Dynamics::generateParticleDistribution(500.0, 500.0, 10.0, velocityM, 50);
+    std::vector<std::unique_ptr<Particle>> particleDistribution = Dynamics::generateParticleDistribution(200.0, 400.0, 20.0, velocityP, 200);
+    std::vector<std::unique_ptr<Particle>> particleDistributionM = Dynamics::generateParticleDistribution(1200.0, 400.0, 20.0, velocityM, 200);
 
     newspace.populateCells(particleDistribution);
     newspace.populateCells(particleDistributionM);
