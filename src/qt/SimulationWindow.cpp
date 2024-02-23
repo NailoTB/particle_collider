@@ -33,9 +33,9 @@ void SimulationWindow::updateParticleCountInToolbar(int particleCount)
     toolbar->updateParticleCount(particleCount);
 }
 
-void SimulationWindow::startPauseButtonClicked(bool isRunning)
+void SimulationWindow::startPauseButtonClicked(bool run)
 {
-    scene->setTimerRunState(isRunning);
+    scene->setTimerRunState(run);
 }
 
 void SimulationWindow::clearParticles()

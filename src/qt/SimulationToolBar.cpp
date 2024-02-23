@@ -27,8 +27,9 @@ SimulationToolBar::SimulationToolBar(QToolBar *parent) : QToolBar(parent)
 
 void SimulationToolBar::pauseButtonPressed()
 {
+    bool startRunning = pauseButton->text() == "Start";
     flipPauseButtonState();
-    emit pausePressed(pauseButton->text() == "Pause"); // Emits isRunning
+    emit pausePressed(startRunning); // Emits startRunning
 }
 
 void SimulationToolBar::clearButtonPressed()
