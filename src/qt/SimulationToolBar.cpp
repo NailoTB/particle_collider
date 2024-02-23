@@ -7,7 +7,7 @@ SimulationToolBar::SimulationToolBar(QToolBar *parent) : QToolBar(parent)
     resetButton = new QPushButton("Reset", this);
 
     velocitySlider = new QSlider(Qt::Horizontal, this);
-    particleCounter = new QLabel("Particle Count: 400");
+    particleCounter = new QLabel("Particles: 400");
 
     velocitySlider->setMinimum(-50);
     velocitySlider->setMaximum(50);
@@ -68,5 +68,5 @@ int SimulationToolBar::velocitySliderValue()
 }
 void SimulationToolBar::updateParticleCount(int &particleCount)
 {
-    particleCounter->setText(QString("Particle Count: %1").arg(particleCount));
+    particleCounter->setText(QString("Particles: %1").arg(particleCount));
 }
