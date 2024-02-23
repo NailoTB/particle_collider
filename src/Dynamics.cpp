@@ -12,9 +12,6 @@ namespace Dynamics
     std::vector<std::unique_ptr<Particle>> generateParticleDistribution(double xCentre, double yCentre, double spread, std::vector<double> velocity, int numParticles)
     {
         // TODO: Make more general for different particles and velocities
-        std::random_device rd;
-        std::mt19937 generator(rd());
-
         std::normal_distribution<double> xDistribution(xCentre, spread);
         std::normal_distribution<double> yDistribution(yCentre, spread);
         std::normal_distribution<double> vDistribution(velocity[0], 1);
