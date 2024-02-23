@@ -21,6 +21,7 @@ public:
 signals:
     void particleCount(int);
 private slots:
+    void generateInitialState();
     void updateParticleCount();
     void clearPreviousParticleGraphics();
     void updateParticlePositions();
