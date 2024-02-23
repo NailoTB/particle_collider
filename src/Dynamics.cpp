@@ -38,7 +38,7 @@ namespace Dynamics
         const double &mass = particle->getMass();
         std::vector<double> newPosition(currentPosition.size());
 
-        for (int i = 0; i < currentPosition.size(); i++)
+        for (size_t i = 0; i < currentPosition.size(); i++)
         {
 
             newPosition[i] = currentPosition[i] + velocity[i] * dt;
@@ -105,7 +105,7 @@ namespace Dynamics
         double v2nNew = (v2n * (m2 - m1) + 2 * m1 * v1n) / (m1 + m2);
 
         std::vector<double> newVelocityOne(3, 0.0), newVelocityTwo(3, 0.0);
-        for (int i = 0; i < 3; i++)
+        for (unsigned int i = 0; i < 3; i++)
         {
             newVelocityOne[i] = collisionForce * (v1nNew * momentumTransferDirection[i] + v1t * momentumTransferTangent[i]);
             newVelocityTwo[i] = collisionForce * (v2nNew * momentumTransferDirection[i] + v2t * momentumTransferTangent[i]);

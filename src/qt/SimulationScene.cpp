@@ -68,7 +68,7 @@ void SimulationScene::flushView()
 
 void SimulationScene::redraw()
 {
-    auto posMatrix = simulationCellSpace->allParticlePositions();
+    std::vector<std::vector<double>> posMatrix = simulationCellSpace->allParticlePositions();
 
     for (auto pos : posMatrix)
     {

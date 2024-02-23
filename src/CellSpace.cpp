@@ -91,9 +91,9 @@ void CellSpace::checkNeighborCollision(Cell &cell1, Cell &cell2)
 
 void CellSpace::updateCells(double dt)
 {
-    for (int i = 0; i < rows; i++)
+    for (unsigned int i = 0; i < rows; i++)
     {
-        for (int j = 0; j < columns; j++)
+        for (unsigned int j = 0; j < columns; j++)
         {
             grid[i][j].checkCollisions();
             if (j + 1 < columns)
@@ -114,9 +114,9 @@ void CellSpace::updateCells(double dt)
 
     std::vector<std::tuple<std::unique_ptr<Particle>, int, int, int, int>> moves;
 
-    for (int i = 0; i < rows; i++)
+    for (unsigned int i = 0; i < rows; i++)
     {
-        for (int j = 0; j < columns; j++)
+        for (unsigned int j = 0; j < columns; j++)
         {
             auto &outOfBoundsStructure = grid[i][j].outOfBoundsParticles;
             if (!outOfBoundsStructure.empty())
@@ -150,9 +150,9 @@ void CellSpace::updateCells(double dt)
         grid[oldRow][oldCol].removeParticle(particle);
     }
 
-    for (int i = 0; i < rows; i++)
+    for (unsigned int i = 0; i < rows; i++)
     {
-        for (int j = 0; j < columns; j++)
+        for (unsigned int j = 0; j < columns; j++)
         {
             grid[i][j].outOfBoundsParticles.clear();
         }
