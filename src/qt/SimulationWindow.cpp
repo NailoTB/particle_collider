@@ -6,7 +6,7 @@ SimulationWindow::SimulationWindow(QMainWindow *parent) : QMainWindow(parent)
     toolbar = new SimulationToolBar();
 
     connect(toolbar, &SimulationToolBar::pausePressed, this, &SimulationWindow::startPauseButtonClicked);
-    connect(toolbar, &SimulationToolBar::resetPressed, this, &SimulationWindow::clearParticles);
+    connect(toolbar, &SimulationToolBar::clearPressed, this, &SimulationWindow::clearParticles);
     connect(scene, &SimulationScene::particleCount, this, &SimulationWindow::updateParticleCountInToolbar);
     setCentralWidget(scene->views()[0]);
     addToolBar(Qt::RightToolBarArea, toolbar);

@@ -3,7 +3,9 @@
 SimulationToolBar::SimulationToolBar(QToolBar *parent) : QToolBar(parent)
 {
     pauseButton = new QPushButton("Start", this);
-    resetButton = new QPushButton("Reset", this);
+    clearButton = new QPushButton("Clear", this);
+    //resetButton = new QPushButton("Reset", this);
+
     velocitySlider = new QSlider(Qt::Horizontal, this);
     particleCounter = new QLabel("Particle Count: 400");
 
@@ -14,11 +16,11 @@ SimulationToolBar::SimulationToolBar(QToolBar *parent) : QToolBar(parent)
     setFloatable(false);
     setMovable(false);
     addWidget(pauseButton);
-    addWidget(resetButton);
+    addWidget(clearButton);
     addWidget(velocitySlider);
     addWidget(particleCounter);
     connect(pauseButton, &QPushButton::clicked, this, &SimulationToolBar::pauseButtonPressed);
-    connect(resetButton, &QPushButton::clicked, this, &SimulationToolBar::resetButtonPressed);
+    connect(clearButton, &QPushButton::clicked, this, &SimulationToolBar::clearButtonPressed);
 }
 
 void SimulationToolBar::pauseButtonPressed()
@@ -26,13 +28,13 @@ void SimulationToolBar::pauseButtonPressed()
     flipPauseButtonState();
     emit pausePressed(pauseButton->text() == "Pause"); // Emits isRunning
 }
-void SimulationToolBar::resetButtonPressed()
+void SimulationToolBar::clearButtonPressed()
 {
     if (pauseButton->text() == "Pause")
     {
         pauseButton->setText("Start");
     }
-    emit resetPressed();
+    emit clearPressed();
 }
 
 void SimulationToolBar::flipPauseButtonState()

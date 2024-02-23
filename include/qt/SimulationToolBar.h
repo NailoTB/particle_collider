@@ -16,14 +16,14 @@ public:
     void updateParticleCount(int&);
 signals:
     void pausePressed(bool isPaused);
-    void resetPressed();
+    void clearPressed();
 private slots:
     void pauseButtonPressed();
-    void resetButtonPressed();
+    void clearButtonPressed();
     void flipPauseButtonState();
 private:
     QPushButton *pauseButton;
-    QPushButton *resetButton;
+    QPushButton *clearButton;
     QSlider *velocitySlider;
     QLabel *particleCounter;
 };
