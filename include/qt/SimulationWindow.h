@@ -25,6 +25,7 @@ private slots:
     void startPauseButtonClicked(bool);
     void clearParticles();
     void updateParticleCountInToolbar(int);
+    void generateInitialState();
 private:
     SimulationToolBar *toolbar;
     SimulationScene *scene;

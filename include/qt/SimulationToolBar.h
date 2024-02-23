@@ -17,13 +17,16 @@ public:
 signals:
     void pausePressed(bool isPaused);
     void clearPressed();
+    void resetPressed();
 private slots:
     void pauseButtonPressed();
     void clearButtonPressed();
+    void resetButtonPressed();
     void flipPauseButtonState();
 private:
     QPushButton *pauseButton;
     QPushButton *clearButton;
+    QPushButton *resetButton;
     QSlider *velocitySlider;
     QLabel *particleCounter;
 };

@@ -18,10 +18,10 @@ public:
     void createParticlesOnPoint(const int& xPos, const int& yPos, const int& velocity);
     void setTimerRunState(bool);
     void clearParticles();
+    void generateInitialState();
 signals:
     void particleCount(int);
 private slots:
-    void generateInitialState();
     void updateParticleCount();
     void clearPreviousParticleGraphics();
     void updateParticlePositions();
