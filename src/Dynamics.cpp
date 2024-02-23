@@ -98,7 +98,7 @@ namespace Dynamics
         double v1n = VectorMath::dotProduct(velocity1, momentumTransferDirection);
         double v2n = VectorMath::dotProduct(velocity2, momentumTransferDirection);
 
-        double collisionForce = 1.0 / (1.0 + std::pow(distance, 2));
+        double collisionForce = 1 - 1.0 / (1.0 + std::pow(distance, 2));
         double inertiaFactor = 1 - collisionForce;
         // collisionForce = 1.0;
         double v1nNew = (v1n * (m1 - m2) + 2 * m2 * v2n) / (m1 + m2);
