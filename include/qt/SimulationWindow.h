@@ -3,7 +3,6 @@
 
 #include <QMainWindow>
 #include <QMouseEvent>
-
 #include "CellSpace.h"
 #include "qt/SimulationToolBar.h"
 #include "qt/SimulationScene.h"
@@ -19,7 +18,8 @@ public:
 signals:
 
 protected:
-    void mousePressEvent(QMouseEvent*) override;
+    //void mousePressEvent(QMouseEvent*) override;
+    //void mouseReleaseEvent(QMouseEvent*) override;
 
 private slots:
     void startPauseButtonClicked(bool);

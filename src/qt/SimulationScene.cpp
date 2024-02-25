@@ -35,10 +35,46 @@ void SimulationScene::generateInitialState()
     redraw();
 }
 
-void SimulationScene::createParticlesOnPoint(const int &xPos, const int &yPos, const int &velocity)
+void SimulationScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
+{
+    QPointF mousePos = event->scenePos();
+    if (event->button() == Qt::LeftButton)
+    {
+        mouseDragStartPoint = mousePos;
+    }
+}
+
+void SimulationScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
+{
+    QPointF mouseDragEndPoint = event->scenePos();
+    if (event->button() == Qt::LeftButton)
+    {
+        std::vector<double> velocityVector(3, 0.0);
+
+        qreal dragDistance = QLineF(mouseDragStartPoint, mouseDragEndPoint).length();
+
+        if (dragDistance != 0)
+        {
+            QPointF dragDirection = (mouseDragEndPoint - mouseDragStartPoint) / dragDistance;
+            double maxDistance = 200.0;
+            double maxFactor = 100.0;
+            double normalizedDistanceX = std::min(std::abs(mouseDragEndPoint.x() - mouseDragStartPoint.x()), maxDistance);
+            double normalizedDistanceY = std::min(std::abs(mouseDragEndPoint.y() - mouseDragStartPoint.y()), maxDistance);
+            double normalizedFactorX = (normalizedDistanceX / maxDistance) * maxFactor;
+            double normalizedFactorY = (normalizedDistanceY / maxDistance) * maxFactor;
+
+            velocityVector[0] = normalizedFactorX * dragDirection.x();
+            velocityVector[1] = normalizedFactorY * dragDirection.y();
+        }
+
+        createParticlesOnPoint(mouseDragStartPoint.x(), mouseDragStartPoint.y(), velocityVector);
+    }
+}
+
+void SimulationScene::createParticlesOnPoint(const int &xPos, const int &yPos, const std::vector<double> &velocity)
 {
     std::vector<std::unique_ptr<Particle>> particleDistribution =
-        Dynamics::generateParticleDistribution(xPos, yPos, 5.0, {(double)velocity, 0, 0}, 10);
+        Dynamics::generateParticleDistribution(xPos, yPos, 5.0, velocity, 10);
     simulationCellSpace->populateCells(particleDistribution);
     redraw();
 }

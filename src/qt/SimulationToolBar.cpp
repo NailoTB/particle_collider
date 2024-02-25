@@ -6,19 +6,19 @@ SimulationToolBar::SimulationToolBar(QToolBar *parent) : QToolBar(parent)
     clearButton = new QPushButton("Clear", this);
     resetButton = new QPushButton("Reset", this);
 
-    velocitySlider = new QSlider(Qt::Horizontal, this);
+    //velocitySlider = new QSlider(Qt::Horizontal, this);
     particleCounter = new QLabel("Particles: 400");
 
-    velocitySlider->setMinimum(-50);
-    velocitySlider->setMaximum(50);
-    velocitySlider->setValue(0);
+    // velocitySlider->setMinimum(-50);
+    // velocitySlider->setMaximum(50);
+    // velocitySlider->setValue(0);
 
     setFloatable(false);
     setMovable(false);
     addWidget(pauseButton);
     addWidget(clearButton);
     addWidget(resetButton);
-    addWidget(velocitySlider);
+    //addWidget(velocitySlider);
     addWidget(particleCounter);
     connect(pauseButton, &QPushButton::clicked, this, &SimulationToolBar::pauseButtonPressed);
     connect(clearButton, &QPushButton::clicked, this, &SimulationToolBar::clearButtonPressed);
@@ -63,10 +63,10 @@ void SimulationToolBar::flipPauseButtonState()
     }
 }
 
-int SimulationToolBar::velocitySliderValue()
-{
-    return velocitySlider->value();
-}
+// int SimulationToolBar::velocitySliderValue()
+// {
+//     return velocitySlider->value();
+// }
 void SimulationToolBar::updateParticleCount(int &particleCount)
 {
     particleCounter->setText(QString("Particles: %1").arg(particleCount));

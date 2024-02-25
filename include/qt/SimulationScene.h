@@ -5,7 +5,7 @@
 #include <QGraphicsScene>
 #include <QGraphicsEllipseItem>
 #include <QGraphicsView>
-
+#include <QGraphicsSceneMouseEvent>
 #include "CellSpace.h"
 
 class SimulationScene : public QGraphicsScene
@@ -15,12 +15,17 @@ class SimulationScene : public QGraphicsScene
 public:
     explicit SimulationScene(QGraphicsScene *parent = 0);
     void loadCellSpace(CellSpace *);
-    void createParticlesOnPoint(const int& xPos, const int& yPos, const int& velocity);
+    void createParticlesOnPoint(const int& xPos, const int& yPos, const std::vector<double>& velocity);
     void setTimerRunState(bool);
     void clearParticles();
     void generateInitialState();
 signals:
     void particleCount(int);
+
+protected:
+    void mousePressEvent(QGraphicsSceneMouseEvent*) override;
+    void mouseReleaseEvent(QGraphicsSceneMouseEvent*) override;
+
 private slots:
     void updateParticleCount();
     void clearPreviousParticleGraphics();
@@ -34,6 +39,7 @@ private:
     QGraphicsView *simulationView;
     QTimer *simulationTimer;
     QTimer *particleCountTimer;
+    QPointF mouseDragStartPoint;
 };
 
 #endif // SIMULATIONSCENE_H

@@ -27,7 +27,7 @@ private:
     QPushButton *pauseButton;
     QPushButton *clearButton;
     QPushButton *resetButton;
-    QSlider *velocitySlider;
+    //QSlider *velocitySlider;
     QLabel *particleCounter;
 };
 
