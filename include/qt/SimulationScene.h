@@ -25,7 +25,7 @@ signals:
 protected:
     void mousePressEvent(QGraphicsSceneMouseEvent*) override;
     void mouseReleaseEvent(QGraphicsSceneMouseEvent*) override;
-
+    void mouseMoveEvent(QGraphicsSceneMouseEvent*) override;
 private slots:
     void updateParticleCount();
     void clearPreviousParticleGraphics();
@@ -40,6 +40,7 @@ private:
     QTimer *simulationTimer;
     QTimer *particleCountTimer;
     QPointF mouseDragStartPoint;
+    QGraphicsLineItem *mouseDragArrow;
 };
 
 #endif // SIMULATIONSCENE_H

@@ -10,6 +10,8 @@ SimulationScene::SimulationScene(QGraphicsScene *parent) : QGraphicsScene(parent
     simulationView->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     simulationView->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 
+    mouseDragArrow = addLine(0, 0, 0, 0, QPen(Qt::black, 2, Qt::SolidLine, Qt::RoundCap));
+
     simulationTimer = new QTimer(this);
     particleCountTimer = new QTimer(this);
     particleCountTimer->start(100);
@@ -33,6 +35,17 @@ void SimulationScene::generateInitialState()
     simulationCellSpace->populateCells(particleDistribution);
     simulationCellSpace->populateCells(particleDistributionM);
     redraw();
+}
+
+void SimulationScene::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
+{
+    if (!mouseDragStartPoint.isNull())
+    {
+        QPointF mousePos = event->scenePos();
+
+        mouseDragArrow->setLine(mouseDragStartPoint.x(), mouseDragStartPoint.y(),
+                                 mousePos.x(), mousePos.y());
+    }
 }
 
 void SimulationScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
@@ -68,6 +81,8 @@ void SimulationScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
         }
 
         createParticlesOnPoint(mouseDragStartPoint.x(), mouseDragStartPoint.y(), velocityVector);
+        mouseDragStartPoint = QPointF();
+        mouseDragArrow->setLine(0, 0, 0, 0);
     }
 }
 
