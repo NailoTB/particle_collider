@@ -14,13 +14,7 @@ class SimulationWindow : public QMainWindow
 public:
     explicit SimulationWindow(QMainWindow *parent = 0);
     void passCellSpaceToScene(CellSpace *);
-
-signals:
-
-protected:
-    //void mousePressEvent(QMouseEvent*) override;
-    //void mouseReleaseEvent(QMouseEvent*) override;
-
+    
 private slots:
     void startPauseButtonClicked(bool);
     void clearParticles();
