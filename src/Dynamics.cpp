@@ -9,7 +9,7 @@ namespace Dynamics
     std::mt19937 generator(rd());
     std::uniform_real_distribution<double> propability(0, 1.0);
 
-    std::vector<std::unique_ptr<Particle>> generateParticleDistribution(double xCentre, double yCentre, double spread, std::vector<double> velocity, int numParticles)
+    std::vector<std::unique_ptr<Particle>> generateInitialParticleDistribution(double xCentre, double yCentre, double spread, std::vector<double> velocity, int numParticles)
     {
         // TODO: Make more general for different particles and velocities
         std::normal_distribution<double> xDistribution(xCentre, spread);
@@ -25,6 +25,23 @@ namespace Dynamics
 
             std::vector<double> particlePosition = {xDistribution(generator), yDistribution(generator), 0};
             std::unique_ptr<Fermion> newParticle = std::make_unique<Fermion>("Electron", electronMass, -eCharge, particlePosition, velocityNoised);
+            generatedParticles.push_back(std::move(newParticle));
+        }
+        return generatedParticles;
+    }
+
+    std::vector<std::unique_ptr<Particle>> generateParticleDistribution(double xCentre, double yCentre, double spread, std::vector<double> velocity, int numParticles)
+    {
+        // TODO: Make more general for different particles and velocities
+        std::normal_distribution<double> xDistribution(xCentre, spread);
+        std::normal_distribution<double> yDistribution(yCentre, spread);
+
+        std::vector<std::unique_ptr<Particle>> generatedParticles;
+
+        for (unsigned int i = 0; i < numParticles; i++)
+        {
+            std::vector<double> particlePosition = {xDistribution(generator), yDistribution(generator), 0};
+            std::unique_ptr<Fermion> newParticle = std::make_unique<Fermion>("Electron", electronMass, -eCharge, particlePosition, velocity);
             generatedParticles.push_back(std::move(newParticle));
         }
         return generatedParticles;

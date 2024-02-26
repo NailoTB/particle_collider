@@ -16,6 +16,7 @@ namespace Dynamics
 
     double velocityNorm(const std::vector<double> &threeVelocity);
     double gamma(const std::vector<double> &threeVelocity);
+    std::vector<std::unique_ptr<Particle>> generateInitialParticleDistribution(double, double, double, std::vector<double>, int);
     std::vector<std::unique_ptr<Particle>> generateParticleDistribution(double, double, double, std::vector<double>, int);
 
     void updatePosition(std::unique_ptr<Particle>& particle, const double dt);
