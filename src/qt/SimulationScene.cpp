@@ -85,9 +85,7 @@ void SimulationScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
             velocityVector[1] = velocityFactor * dragDirection.y();
  
         }
-
         createParticlesOnPoint(mouseDragStartPoint.x(), mouseDragStartPoint.y(), velocityVector, particleMass);
-        mouseDragStartPoint = QPointF();
         mouseDragArrow->setLine(0, 0, 0, 0);
     }
 }
