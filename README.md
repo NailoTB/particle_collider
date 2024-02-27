@@ -13,7 +13,7 @@ TODO: Fancier interactions
 ### How to Run
 ```
 cmake .
-cmake --build .
+make
 ./ParticleSimulator
 ```
 
