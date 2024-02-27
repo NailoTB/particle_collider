@@ -70,8 +70,8 @@ void SimulationScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
         {
             QPointF dragDirection = (mouseDragEndPoint - mouseDragStartPoint) / dragDistance;
             
-            double maxDistance = 200.0;
-            double maxFactor = 100.0;
+            double maxDistance = 400.0;
+            double maxFactor = 200.0;
 
             double cappedDistance = std::min(dragDistance, maxDistance);
             double velocityFactor = (cappedDistance / maxDistance) * maxFactor;
