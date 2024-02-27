@@ -100,10 +100,7 @@ void SimulationScene::createParticlesOnPoint(const int &xPos, const int &yPos, c
 
 void SimulationScene::clearPreviousParticleGraphics()
 {
-    for (auto item : previousTimestepParticleGraphics)
-    {
-        removeItem(item);
-    }
+    qDeleteAll(previousTimestepParticleGraphics);
     previousTimestepParticleGraphics.clear();
 }
 
