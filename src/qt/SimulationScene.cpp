@@ -57,11 +57,16 @@ void SimulationScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
     }
 }
 
+void SimulationScene::updateParticleMass(double mass){
+    particleMass = mass;
+}
+
 void SimulationScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
     QPointF mouseDragEndPoint = event->scenePos();
     if (event->button() == Qt::LeftButton)
     {
+        emit generateParticles(); // Tells SimulationWindow to grab particle mass from toolbar
         std::vector<double> velocityVector(3, 0.0);
 
         qreal dragDistance = QLineF(mouseDragStartPoint, mouseDragEndPoint).length();
@@ -81,16 +86,16 @@ void SimulationScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
  
         }
 
-        createParticlesOnPoint(mouseDragStartPoint.x(), mouseDragStartPoint.y(), velocityVector);
+        createParticlesOnPoint(mouseDragStartPoint.x(), mouseDragStartPoint.y(), velocityVector, particleMass);
         mouseDragStartPoint = QPointF();
         mouseDragArrow->setLine(0, 0, 0, 0);
     }
 }
 
-void SimulationScene::createParticlesOnPoint(const int &xPos, const int &yPos, const std::vector<double> &velocity)
+void SimulationScene::createParticlesOnPoint(const int &xPos, const int &yPos, const std::vector<double> &velocity, double mass)
 {
     std::vector<std::unique_ptr<Particle>> particleDistribution =
-        Dynamics::generateParticleDistribution(xPos, yPos, 5.0, velocity, 10);
+        Dynamics::generateParticleDistribution(xPos, yPos, 5.0, mass, velocity, 10);
     simulationCellSpace->populateCells(particleDistribution);
     redraw();
 }

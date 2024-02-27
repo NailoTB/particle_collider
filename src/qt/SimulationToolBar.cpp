@@ -6,30 +6,40 @@ SimulationToolBar::SimulationToolBar(QToolBar *parent) : QToolBar(parent)
     clearButton = new QPushButton("Clear", this);
     resetButton = new QPushButton("Reset", this);
 
-    //velocitySlider = new QSlider(Qt::Horizontal, this);
     particleCounter = new QLabel("Particles: 400");
 
-    // velocitySlider->setMinimum(-50);
-    // velocitySlider->setMaximum(50);
-    // velocitySlider->setValue(0);
+    massLabel = new QLabel("Mass: 0.5 MeV");
+    massSlider = new QSlider(Qt::Horizontal, this);
+
+    massSlider->setMinimum(1);
+    massSlider->setMaximum(20);
+    massSlider->setValue(5);
+
+    auto separator = new QLabel("New particles:");
 
     setFloatable(false);
     setMovable(false);
     addWidget(pauseButton);
     addWidget(clearButton);
     addWidget(resetButton);
-    //addWidget(velocitySlider);
     addWidget(particleCounter);
+    addSeparator();
+    addWidget(separator);
+    addWidget(massLabel);
+    addWidget(massSlider);
+
     connect(pauseButton, &QPushButton::clicked, this, &SimulationToolBar::pauseButtonPressed);
     connect(clearButton, &QPushButton::clicked, this, &SimulationToolBar::clearButtonPressed);
     connect(resetButton, &QPushButton::clicked, this, &SimulationToolBar::resetButtonPressed);
+    connect(massSlider, &QSlider::valueChanged, this, &SimulationToolBar::updateMassLabel);
+
 }
 
 void SimulationToolBar::pauseButtonPressed()
 {
     bool startRunning = pauseButton->text() == "Start";
     flipPauseButtonState();
-    emit pausePressed(startRunning); // Emits startRunning
+    emit pausePressed(startRunning);
 }
 
 void SimulationToolBar::clearButtonPressed()
@@ -63,11 +73,18 @@ void SimulationToolBar::flipPauseButtonState()
     }
 }
 
-// int SimulationToolBar::velocitySliderValue()
-// {
-//     return velocitySlider->value();
-// }
+double SimulationToolBar::massSliderValue()
+{
+    double massSliderValueScaled = (double)massSlider->value() * 0.1;
+    return massSliderValueScaled;
+}
 void SimulationToolBar::updateParticleCount(int &particleCount)
 {
     particleCounter->setText(QString("Particles: %1").arg(particleCount));
+}
+
+void SimulationToolBar::updateMassLabel()
+{
+    QString formattedMass = QString::number(massSliderValue(), 'f', 1);
+    massLabel->setText(QString("Mass: %1 MeV").arg(formattedMass));
 }

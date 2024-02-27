@@ -8,6 +8,7 @@ SimulationWindow::SimulationWindow(QMainWindow *parent) : QMainWindow(parent)
     connect(toolbar, &SimulationToolBar::clearPressed, this, &SimulationWindow::clearParticles);
     connect(toolbar, &SimulationToolBar::resetPressed, this, &SimulationWindow::generateInitialState);
     connect(scene, &SimulationScene::particleCount, this, &SimulationWindow::updateParticleCountInToolbar);
+    connect(scene, &SimulationScene::generateParticles, this, &SimulationWindow::getParticleMass);
     setCentralWidget(scene->views()[0]);
     addToolBar(Qt::RightToolBarArea, toolbar);
 }
@@ -35,4 +36,9 @@ void SimulationWindow::generateInitialState()
 {
     scene->setTimerRunState(false);
     scene->generateInitialState();
+}
+
+void SimulationWindow::getParticleMass(){
+    double massFromSlider = toolbar->massSliderValue();
+    scene->updateParticleMass(massFromSlider);
 }

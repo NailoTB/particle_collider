@@ -12,7 +12,7 @@ class SimulationToolBar : public QToolBar
 
 public:
     explicit SimulationToolBar(QToolBar *parent = 0);
-    int velocitySliderValue();
+    double massSliderValue();
     void updateParticleCount(int&);
 signals:
     void pausePressed(bool isPaused);
@@ -23,12 +23,14 @@ private slots:
     void clearButtonPressed();
     void resetButtonPressed();
     void flipPauseButtonState();
+    void updateMassLabel();
 private:
     QPushButton *pauseButton;
     QPushButton *clearButton;
     QPushButton *resetButton;
-    //QSlider *velocitySlider;
+    QSlider *massSlider;
     QLabel *particleCounter;
+    QLabel *massLabel;
 };
 
 #endif // QT_SIMULATIONTOOLBAR_H

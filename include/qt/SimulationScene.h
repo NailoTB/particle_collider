@@ -15,12 +15,14 @@ class SimulationScene : public QGraphicsScene
 public:
     explicit SimulationScene(QGraphicsScene *parent = 0);
     void loadCellSpace(CellSpace *);
-    void createParticlesOnPoint(const int& xPos, const int& yPos, const std::vector<double>& velocity);
+    void createParticlesOnPoint(const int& xPos, const int& yPos, const std::vector<double>& velocity, double mass);
     void setTimerRunState(bool);
     void clearParticles();
     void generateInitialState();
+    void updateParticleMass(double);
 signals:
     void particleCount(int);
+    void generateParticles();
 
 protected:
     void mousePressEvent(QGraphicsSceneMouseEvent*) override;
@@ -41,6 +43,7 @@ private:
     QTimer *particleCountTimer;
     QPointF mouseDragStartPoint;
     QGraphicsLineItem *mouseDragArrow;
+    double particleMass;
 };
 
 #endif // SIMULATIONSCENE_H

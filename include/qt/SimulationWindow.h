@@ -20,6 +20,7 @@ private slots:
     void clearParticles();
     void updateParticleCountInToolbar(int);
     void generateInitialState();
+    void getParticleMass();
 private:
     SimulationToolBar *toolbar;
     SimulationScene *scene;
