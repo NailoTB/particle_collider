@@ -64,9 +64,9 @@ namespace Dynamics
         particle->setPosition(newPosition);
     }
 
-    double exponential(double x)
-    {
-        return std::exp(-interactionLength * x);
+    double coulombInteraction(double &separation, double &charge1, double &charge2){
+        double chargeFactor = charge1 * charge2;
+        return chargeFactor / (chargeFactor + 2*std::pow(separation, 2));
     }
 
     double particleDistance(std::unique_ptr<Particle> &particle1, std::unique_ptr<Particle> &particle2)
@@ -85,7 +85,9 @@ namespace Dynamics
     bool interactFermionFermion(std::unique_ptr<Particle> &fermion1, std::unique_ptr<Particle> &fermion2)
     {
         double distance = particleDistance(fermion1, fermion2);
-        return exponential(distance) >= propability(generator);
+        double charge1 = fermion1->getCharge();
+        double charge2 = fermion2->getCharge();
+        return coulombInteraction(distance, charge1, charge2) >= propability(generator);
     }
 
     void collision(std::unique_ptr<Particle> &fermion1, std::unique_ptr<Particle> &fermion2)
@@ -94,6 +96,8 @@ namespace Dynamics
         double distance = particleDistance(fermion1, fermion2);
         double m1 = fermion1->getMass();
         double m2 = fermion2->getMass();
+        double charge1 = fermion1->getCharge();
+        double charge2 = fermion2->getCharge();
 
         std::vector<double> direction = particleDirectionVector(fermion1, fermion2);
 
@@ -115,9 +119,9 @@ namespace Dynamics
         double v1n = VectorMath::dotProduct(velocity1, momentumTransferDirection);
         double v2n = VectorMath::dotProduct(velocity2, momentumTransferDirection);
 
-        double collisionForce = 1 - 1.0 / (1.0 + std::pow(distance, 2));
+        double collisionForce = 1.0 - coulombInteraction(distance, charge1, charge2);
         double inertiaFactor = 1 - collisionForce;
-        // collisionForce = 1.0;
+
         double v1nNew = (v1n * (m1 - m2) + 2 * m2 * v2n) / (m1 + m2);
         double v2nNew = (v2n * (m2 - m1) + 2 * m1 * v1n) / (m1 + m2);
 

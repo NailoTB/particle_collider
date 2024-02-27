@@ -30,8 +30,8 @@ void SimulationScene::generateInitialState()
     clearParticles();
     std::vector<double> velocityP = {70.0, 0.0, 0.0};
     std::vector<double> velocityM = {-70.0, 0.0, 0.0};
-    std::vector<std::unique_ptr<Particle>> particleDistribution = Dynamics::generateParticleDistribution(200.0, 400.0, 20.0, velocityP, 200);
-    std::vector<std::unique_ptr<Particle>> particleDistributionM = Dynamics::generateParticleDistribution(1200.0, 400.0, 20.0, velocityM, 200);
+    std::vector<std::unique_ptr<Particle>> particleDistribution = Dynamics::generateInitialParticleDistribution(200.0, 400.0, 20.0, velocityP, 200);
+    std::vector<std::unique_ptr<Particle>> particleDistributionM = Dynamics::generateInitialParticleDistribution(1200.0, 400.0, 20.0, velocityM, 200);
     simulationCellSpace->populateCells(particleDistribution);
     simulationCellSpace->populateCells(particleDistributionM);
     redraw();
